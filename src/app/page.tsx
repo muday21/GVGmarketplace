@@ -111,7 +111,7 @@ export default function Home() {
 
   return (
     <Layout>
-      <div className="bg-white" style={{backgroundColor: '#f3f4f6', padding: '20px'}}>
+      <div className="bg-white">
         <section className="relative min-h-screen flex items-center overflow-hidden">
           <div className="absolute inset-0">
             <div
