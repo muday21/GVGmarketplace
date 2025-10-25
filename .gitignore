@@ -107,3 +107,12 @@ AUTHENTICATION_FLOW.md
 
 # Linting config (not needed for frontend)
 eslint.config.js
+
+# Package lock files (not needed for frontend)
+package-lock.json
+
+# Next.js generated files (not needed for frontend)
+next-env.d.ts
+
+# PostCSS config (not needed for frontend)
+postcss.config.js
