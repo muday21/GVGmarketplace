@@ -66,9 +66,9 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta name="theme-color" content="#059669" />
       </head>
-      <body>
+      <body className="bg-gray-100 min-h-screen">
         <PerformanceMonitor />
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
           <I18nProvider>
             <CartProvider>
               {children}

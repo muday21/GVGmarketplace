@@ -31,8 +31,6 @@ const nextConfig = {
     },
   },
   
-  // Compression
-  compress: true,
   
   // Output optimization
   output: 'standalone',
@@ -91,10 +89,6 @@ const nextConfig = {
         },
       };
     }
-    
-    // Tree shaking optimization
-    config.optimization.usedExports = true;
-    config.optimization.sideEffects = false;
     
     return config;
   },
