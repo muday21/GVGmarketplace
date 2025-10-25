@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, Suspense, lazy } from 'react';
+import { useState, useEffect, lazy } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { Shield, TrendingUp, Globe, Package, Star, Quote } from 'lucide-react';

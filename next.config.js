@@ -3,7 +3,6 @@ const nextConfig = {
   reactStrictMode: true,
   
   // Performance optimizations
-  swcMinify: true,
   compress: true,
   
   // Image optimization
@@ -19,14 +18,15 @@ const nextConfig = {
   
   // Bundle optimization
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['lucide-react', 'react-i18next'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  },
+  
+  // Turbopack configuration
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },
