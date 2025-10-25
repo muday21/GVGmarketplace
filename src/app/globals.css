@@ -5,6 +5,12 @@
 /* Test styles to ensure CSS is working */
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  background-color: #f3f4f6;
+}
+
+/* Vercel CSS Test - This should make the page background light gray */
+html {
+  background-color: #f3f4f6;
 }
 
 /* Performance optimizations */
