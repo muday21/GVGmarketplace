@@ -72,7 +72,7 @@ export default function Cart() {
             <div className="text-center py-16">
               <ShoppingCart className="w-24 h-24 text-slate-300 mx-auto mb-6" />
               <h1 className="text-3xl font-bold text-slate-900 mb-4">Your cart is empty</h1>
-              <p className="text-slate-600 mb-8">Looks like you haven't added any items to your cart yet.</p>
+              <p className="text-slate-600 mb-8">Looks like you haven&apos;t added any items to your cart yet.</p>
               <Link href="/products">
                 <Button variant="primary" size="lg">
                   <ArrowLeft className="w-5 h-5 mr-2" />
