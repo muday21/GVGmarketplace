@@ -112,10 +112,6 @@ export default function Home() {
   return (
     <Layout>
       <div className="bg-white">
-        {/* CSS Test - Remove this after confirming CSS works */}
-        <div className="bg-red-500 text-white p-4 mb-4 text-center">
-          <h1 className="text-2xl font-bold">CSS TEST - If you see this styled, CSS is working!</h1>
-        </div>
         <section className="relative min-h-screen flex items-center overflow-hidden">
           <div className="absolute inset-0">
             <div
