@@ -100,3 +100,10 @@ temp/
 
 # Bolt files
 .bolt/
+
+# Documentation files (not needed for frontend)
+README.md
+AUTHENTICATION_FLOW.md
+
+# Linting config (not needed for frontend)
+eslint.config.js
