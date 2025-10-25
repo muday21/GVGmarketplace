@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense, lazy } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { Shield, TrendingUp, Globe, Package, Star, Quote } from 'lucide-react';
@@ -8,10 +8,10 @@ import { Button } from '../components/ui/Button';
 import { Card, CardContent } from '../components/ui/Card';
 import { Layout } from '../components/layout/Layout';
 
-// Import dashboard components
-import BuyerDashboard from './dashboard/buyer/page';
-import ProducerDashboard from './dashboard/producer/page';
-import AdminDashboard from './dashboard/admin/page';
+// Lazy load dashboard components for better performance
+const BuyerDashboard = lazy(() => import('./dashboard/buyer/page'));
+const ProducerDashboard = lazy(() => import('./dashboard/producer/page'));
+const AdminDashboard = lazy(() => import('./dashboard/admin/page'));
 
 export default function Home() {
   const { t } = useTranslation();
