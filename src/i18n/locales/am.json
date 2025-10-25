@@ -1,0 +1,79 @@
+{
+  "app": {
+    "name": "ጊግ አቅርቦት ሰንሰለት",
+    "tagline": "ግልጽ። መከታተል የሚቻል። የታመነ።"
+  },
+  "nav": {
+    "home": "መነሻ",
+    "products": "ምርቶች",
+    "dashboard": "ዳሽቦርድ",
+    "orders": "ትዕዛዞች",
+    "signin": "ግባ",
+    "signup": "ተመዝገብ",
+    "signout": "ውጣ",
+    "verify": "ምርት አረጋግጥ"
+  },
+  "hero": {
+    "title": "የማመን የሚችሉት የኢትዮጵያ ምርቶች",
+    "subtitle": "ከእርሻ እስከ በሮ ድረስ በብሎክቼይን የተረጋገጠ የአቅርቦት ሰንሰለት",
+    "cta": "ምርቶችን ያስስ",
+    "ctaSecondary": "ተጨማሪ ይወቁ"
+  },
+  "products": {
+    "title": "ምርቶቻችን",
+    "search": "ምርቶችን ፈልግ...",
+    "filter": "አጣራ",
+    "category": "ምድብ",
+    "allCategories": "ሁሉም ምድቦች",
+    "viewDetails": "ዝርዝሮችን ይመልከቱ",
+    "addToCart": "ወደ ጋሪ ጨምር",
+    "outOfStock": "ከአክሲዮን ውጭ"
+  },
+  "producer": {
+    "dashboard": "አምራች ዳሽቦርድ",
+    "createProduct": "ምርት ፍጠር",
+    "myProducts": "ምርቶቼ",
+    "myBatches": "ቡድኖቼ",
+    "createBatch": "ቡድን ፍጠር",
+    "kycStatus": "የኬዋይሲ ሁኔታ",
+    "onboarding": "የመግቢያ ዝርዝር"
+  },
+  "buyer": {
+    "dashboard": "ገዢ ዳሽቦርድ",
+    "myOrders": "ትዕዛዞቼ",
+    "cart": "የግዢ ጋሪ",
+    "checkout": "ይግዙ"
+  },
+  "admin": {
+    "dashboard": "አስተዳዳሪ ዳሽቦርድ",
+    "kycQueue": "የኬዋይሲ ወረፋ",
+    "allProducts": "ሁሉም ምርቶች",
+    "allOrders": "ሁሉም ትዕዛዞች",
+    "analytics": "ትንታኔዎች"
+  },
+  "auth": {
+    "signin": "ግባ",
+    "signup": "ተመዝገብ",
+    "email": "ኢሜል",
+    "password": "የይለፍ ቃል",
+    "confirmPassword": "የይለፍ ቃል አረጋግጥ",
+    "name": "ሙሉ ስም",
+    "role": "እኔ... ነኝ",
+    "producer": "አምራች",
+    "buyer": "ገዢ",
+    "noAccount": "መለያ የለህም?",
+    "hasAccount": "አስቀድመህ መለያ አለህ?",
+    "forgotPassword": "የይለፍ ቃል ረሳኽ?"
+  },
+  "common": {
+    "save": "አስቀምጥ",
+    "cancel": "ሰርዝ",
+    "edit": "አርትዕ",
+    "delete": "ሰርዝ",
+    "create": "ፍጠር",
+    "submit": "አስረክብ",
+    "loading": "በመጫን ላይ...",
+    "error": "ስህተት",
+    "success": "ተሳክቷል"
+  }
+}

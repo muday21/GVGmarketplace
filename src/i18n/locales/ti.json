@@ -1,0 +1,79 @@
+{
+  "app": {
+    "name": "ጊግ ሰንሰለት ምቕራብ",
+    "tagline": "ንጹህ። ክትክተሎ ዝከኣል። ዝተኣማመነ።"
+  },
+  "nav": {
+    "home": "ገጽ ቀዳማይ",
+    "products": "ፍርያት",
+    "dashboard": "Dashboard",
+    "orders": "ትእዛዛት",
+    "signin": "እቶ",
+    "signup": "ተመዝገብ",
+    "signout": "ውጻእ",
+    "verify": "ፍርያት ኣረጋግጽ"
+  },
+  "hero": {
+    "title": "ክትእመኖም እትኽእል ኢትዮጵያውያን ፍርያት",
+    "subtitle": "ብብሎክቼይን ዝተረጋገጸ ሰንሰለት ምቕራብ ካብ እርሻ ክሳብ ደገኻ",
+    "cta": "ፍርያት ድህስስ",
+    "ctaSecondary": "ዝያዳ ተማሃር"
+  },
+  "products": {
+    "title": "ፍርያትና",
+    "search": "ፍርያት ድለ...",
+    "filter": "ምርጫ",
+    "category": "ምድብ",
+    "allCategories": "ኩሎም ምድባት",
+    "viewDetails": "ዝርዝር ርአ",
+    "addToCart": "ናብ ዓረባ ወስኽ",
+    "outOfStock": "ካብ ስቶክ ወጺኡ"
+  },
+  "producer": {
+    "dashboard": "Dashboard ፈራሒ",
+    "createProduct": "ፍርያት ፍጠር",
+    "myProducts": "ፍርያተይ",
+    "myBatches": "ጉጅለታተይ",
+    "createBatch": "ጉጅለ ፍጠር",
+    "kycStatus": "ኩነታት KYC",
+    "onboarding": "ዝርዝር መእተዊ"
+  },
+  "buyer": {
+    "dashboard": "Dashboard ዓዲ",
+    "myOrders": "ትእዛዛተይ",
+    "cart": "ዓረባ ዕደላ",
+    "checkout": "ግዛእ"
+  },
+  "admin": {
+    "dashboard": "Dashboard ኣዛዚ",
+    "kycQueue": "ወረፋ KYC",
+    "allProducts": "ኩሎም ፍርያት",
+    "allOrders": "ኩሎም ትእዛዛት",
+    "analytics": "ትንተና"
+  },
+  "auth": {
+    "signin": "እቶ",
+    "signup": "ተመዝገብ",
+    "email": "ኢመይል",
+    "password": "ቃል ምሕላፍ",
+    "confirmPassword": "ቃል ምሕላፍ ኣረጋግጽ",
+    "name": "ምሉእ ስም",
+    "role": "እየ...",
+    "producer": "ፈራሒ",
+    "buyer": "ዓዲ",
+    "noAccount": "መለለዪ የብልካን?",
+    "hasAccount": "ቀደም መለለዪ ኣለካ?",
+    "forgotPassword": "ቃል ምሕላፍ ረሲዕካዮ?"
+  },
+  "common": {
+    "save": "ዕቀብ",
+    "cancel": "ሰርዝ",
+    "edit": "ኣርትዕ",
+    "delete": "ደምስስ",
+    "create": "ፍጠር",
+    "submit": "ኣቕርብ",
+    "loading": "ይጽዕን ኣሎ...",
+    "error": "ጌጋ",
+    "success": "ዓወት"
+  }
+}

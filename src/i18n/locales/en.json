@@ -1,0 +1,79 @@
+{
+  "app": {
+    "name": "GIG Supply Chain",
+    "tagline": "Transparent. Traceable. Trusted."
+  },
+  "nav": {
+    "home": "Home",
+    "products": "Products",
+    "dashboard": "Dashboard",
+    "orders": "Orders",
+    "signin": "Sign In",
+    "signup": "Sign Up",
+    "signout": "Sign Out",
+    "verify": "Verify Product"
+  },
+  "hero": {
+    "title": "Ethiopian Products You Can Trust",
+    "subtitle": "Blockchain-verified supply chain from farm to your door",
+    "cta": "Explore Products",
+    "ctaSecondary": "Learn More"
+  },
+  "products": {
+    "title": "Our Products",
+    "search": "Search products...",
+    "filter": "Filter",
+    "category": "Category",
+    "allCategories": "All Categories",
+    "viewDetails": "View Details",
+    "addToCart": "Add to Cart",
+    "outOfStock": "Out of Stock"
+  },
+  "producer": {
+    "dashboard": "Producer Dashboard",
+    "createProduct": "Create Product",
+    "myProducts": "My Products",
+    "myBatches": "My Batches",
+    "createBatch": "Create Batch",
+    "kycStatus": "KYC Status",
+    "onboarding": "Onboarding Checklist"
+  },
+  "buyer": {
+    "dashboard": "Buyer Dashboard",
+    "myOrders": "My Orders",
+    "cart": "Shopping Cart",
+    "checkout": "Checkout"
+  },
+  "admin": {
+    "dashboard": "Admin Dashboard",
+    "kycQueue": "KYC Queue",
+    "allProducts": "All Products",
+    "allOrders": "All Orders",
+    "analytics": "Analytics"
+  },
+  "auth": {
+    "signin": "Sign In",
+    "signup": "Sign Up",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "name": "Full Name",
+    "role": "I am a...",
+    "producer": "Producer",
+    "buyer": "Buyer",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?",
+    "forgotPassword": "Forgot password?"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "create": "Create",
+    "submit": "Submit",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  }
+}

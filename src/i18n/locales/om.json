@@ -1,0 +1,79 @@
+{
+  "app": {
+    "name": "GIG Dhiyeessaa Sarara",
+    "tagline": "Ifa. Hordofamuu danda'u. Amansiisaa."
+  },
+  "nav": {
+    "home": "Mana",
+    "products": "Oomishaalee",
+    "dashboard": "Dashboard",
+    "orders": "Ajajawwan",
+    "signin": "Seeni",
+    "signup": "Galmaa'i",
+    "signout": "Ba'i",
+    "verify": "Oomisha Mirkaneessi"
+  },
+  "hero": {
+    "title": "Oomishaalee Itoophiyaa Amansiisoo",
+    "subtitle": "Sarara dhiyeessaa blockchain irraa mirkaneeffame qonna irraa gara balbala keessaniitti",
+    "cta": "Oomishaalee Qorati",
+    "ctaSecondary": "Dabalataan Baraa"
+  },
+  "products": {
+    "title": "Oomishaalee Keenya",
+    "search": "Oomishaalee barbaadi...",
+    "filter": "Calaluu",
+    "category": "Ramaddii",
+    "allCategories": "Ramaddiiwwan Hunda",
+    "viewDetails": "Bal'inaan Ilaali",
+    "addToCart": "Gara Cart tti Ida'i",
+    "outOfStock": "Isa Hin Jiru"
+  },
+  "producer": {
+    "dashboard": "Dashboard Oomishtuu",
+    "createProduct": "Oomisha Uumi",
+    "myProducts": "Oomishaalee Koo",
+    "myBatches": "Garee Koo",
+    "createBatch": "Garee Uumi",
+    "kycStatus": "Haala KYC",
+    "onboarding": "Tarree Seensa"
+  },
+  "buyer": {
+    "dashboard": "Dashboard Bitaa",
+    "myOrders": "Ajajawwan Koo",
+    "cart": "Gaarii Bittaa",
+    "checkout": "Bittaa"
+  },
+  "admin": {
+    "dashboard": "Dashboard Bulchaa",
+    "kycQueue": "Tarree Eegaa KYC",
+    "allProducts": "Oomishaalee Hunda",
+    "allOrders": "Ajajawwan Hunda",
+    "analytics": "Xiinxala"
+  },
+  "auth": {
+    "signin": "Seeni",
+    "signup": "Galmaa'i",
+    "email": "Email",
+    "password": "Jecha Icciitii",
+    "confirmPassword": "Jecha Icciitii Mirkaneessi",
+    "name": "Maqaa Guutuu",
+    "role": "Ani...",
+    "producer": "Oomishtuu",
+    "buyer": "Bitaa",
+    "noAccount": "Herrega hin qabdu?",
+    "hasAccount": "Duraanuu herrega qabda?",
+    "forgotPassword": "Jecha icciitii irraanfatte?"
+  },
+  "common": {
+    "save": "Olkaa'i",
+    "cancel": "Haqi",
+    "edit": "Gulaali",
+    "delete": "Haqi",
+    "create": "Uumi",
+    "submit": "Dhiheessi",
+    "loading": "Fe'aa jira...",
+    "error": "Dogoggora",
+    "success": "Milkaa'ina"
+  }
+}
