@@ -10,11 +10,6 @@ const nextConfig = {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
-  
-  // Bundle optimization
-  experimental: {
-    optimizePackageImports: ['lucide-react', 'react-i18next'],
-  },
 };
 
 module.exports = nextConfig;
