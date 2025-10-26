@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   
+  // Fix workspace root warning
+  outputFileTracingRoot: __dirname,
+  
   // Image optimization
   images: {
     domains: ['images.pexels.com'],
