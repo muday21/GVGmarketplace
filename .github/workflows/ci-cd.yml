@@ -122,7 +122,7 @@ jobs:
       run: npm run build
       
     - name: Deploy to Vercel (Optional)
-      if: env.VERCEL_TOKEN != ''
+      if: secrets.VERCEL_TOKEN != ''
       uses: amondnet/vercel-action@v25
       with:
         vercel-token: ${{ secrets.VERCEL_TOKEN }}
@@ -131,7 +131,7 @@ jobs:
         working-directory: ./
         
     - name: Deploy to Netlify (Alternative)
-      if: env.NETLIFY_AUTH_TOKEN != ''
+      if: secrets.NETLIFY_AUTH_TOKEN != ''
       uses: nwtgck/actions-netlify@v3.0
       with:
         publish-dir: './out'
