@@ -24,7 +24,7 @@ export const demoAuth = {
     return { success: false, error: 'Please enter email and password' };
   },
   
-  signUp: async (email: string, password: string, name: string, role: string) => {
+  signUp: async (email: string, _password: string, name: string, role: string) => {
     // Demo signup - just store in localStorage
     localStorage.setItem('isAuthenticated', 'true');
     localStorage.setItem('userRole', role);

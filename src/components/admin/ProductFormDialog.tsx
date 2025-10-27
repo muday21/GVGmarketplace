@@ -8,10 +8,27 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 interface ProductFormDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (product: any) => void;
-  product?: any;
-  producers: any[];
+  onSubmit: (product: Partial<Product>) => void;
+  product?: Product | null;
+  producers: Producer[];
 }
+
+type Product = {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  price: number;
+  stock_quantity: number;
+  producer_id: string | null;
+  image_url: string;
+  status: string;
+};
+
+type Producer = {
+  id: string;
+  company_name: string;
+};
 
 export function ProductFormDialog({ 
   isOpen, 
@@ -33,7 +50,12 @@ export function ProductFormDialog({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+    const submitData = {
+      ...formData,
+      price: typeof formData.price === 'string' ? parseFloat(formData.price) || 0 : formData.price,
+      stock_quantity: typeof formData.stock_quantity === 'string' ? parseInt(formData.stock_quantity) || 0 : formData.stock_quantity,
+    };
+    onSubmit(submitData);
     onClose();
   };
 

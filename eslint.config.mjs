@@ -42,6 +42,8 @@ export default [
         HTMLButtonElement: 'readonly',
         HTMLSelectElement: 'readonly',
         HTMLTextAreaElement: 'readonly',
+        HTMLHeadingElement: 'readonly',
+        HTMLParagraphElement: 'readonly',
         MouseEvent: 'readonly',
         Element: 'readonly',
         // React

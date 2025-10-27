@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
-import { Search, Edit, Trash2, Users, Mail, Phone, MapPin, Plus } from 'lucide-react';
+import { Search, Edit, Trash2, Users, Mail, Phone, Plus } from 'lucide-react';
 import { DeleteConfirmDialog } from '@/components/admin/DeleteConfirmDialog';
 import { CustomerFormDialog } from '@/components/admin/CustomerFormDialog';
 
@@ -50,55 +50,43 @@ export default function CustomersPage() {
           status: 'active',
           created_at: '2024-09-15',
           total_orders: 12,
-          total_spent: 1250.00,
+          total_spent: 500.75,
         },
         {
           id: '2',
-          name: 'Marie Dubois',
-          email: 'marie.dubois@email.com',
-          phone: '+33-1-2345-6789',
-          address: '45 Rue de la Paix, Paris, France',
+          name: 'Jane Doe',
+          email: 'jane.doe@email.com',
+          phone: '+1-555-0456',
+          address: '456 Oak Ave, Los Angeles, CA 90001',
           role: 'BUYER',
           status: 'active',
           created_at: '2024-09-20',
           total_orders: 8,
-          total_spent: 890.00,
+          total_spent: 320.50,
         },
         {
           id: '3',
-          name: 'Ahmed Hassan',
-          email: 'ahmed.hassan@email.com',
-          phone: '+971-50-123-4567',
-          address: 'Dubai Mall, Dubai, UAE',
-          role: 'BUYER',
-          status: 'active',
-          created_at: '2024-09-25',
-          total_orders: 15,
-          total_spent: 2100.00,
-        },
-        {
-          id: '4',
-          name: 'Sarah Johnson',
-          email: 'sarah.johnson@email.com',
-          phone: '+1-555-0456',
-          address: '789 Oak Ave, Los Angeles, CA 90210',
-          role: 'BUYER',
+          name: 'Peter Jones',
+          email: 'peter.j@email.com',
+          phone: '+1-555-0789',
+          address: '789 Pine St, Chicago, IL 60601',
+          role: 'PRODUCER', // Example of a producer who is also a customer
           status: 'inactive',
-          created_at: '2024-08-10',
+          created_at: '2024-08-01',
           total_orders: 3,
           total_spent: 150.00,
         },
         {
-          id: '5',
-          name: 'Michael Brown',
-          email: 'michael.brown@email.com',
-          phone: '+44-20-7946-0958',
-          address: '10 Downing Street, London, UK',
-          role: 'BUYER',
+          id: '4',
+          name: 'Admin User',
+          email: 'admin@example.com',
+          phone: '+1-555-1011',
+          address: 'Admin Office, Metropolis',
+          role: 'ADMIN',
           status: 'active',
-          created_at: '2024-10-01',
-          total_orders: 6,
-          total_spent: 750.00,
+          created_at: '2024-01-01',
+          total_orders: 0,
+          total_spent: 0,
         },
       ]);
       setLoading(false);
@@ -128,22 +116,27 @@ export default function CustomersPage() {
     }
   };
 
-  const handleFormSubmit = (customerData: any) => {
+  const handleFormSubmit = (customerData: Partial<Customer>) => {
     if (selectedCustomer) {
       // Update existing customer
-      setCustomers(customers.map(c => 
-        c.id === selectedCustomer.id 
+      setCustomers(customers.map(c =>
+        c.id === selectedCustomer.id
           ? { ...c, ...customerData }
           : c
       ));
     } else {
       // Add new customer
       const newCustomer: Customer = {
-        ...customerData,
         id: `customer-${Date.now()}`,
         created_at: new Date().toISOString().split('T')[0],
         total_orders: 0,
         total_spent: 0,
+        name: customerData.name || '',
+        email: customerData.email || '',
+        phone: customerData.phone,
+        address: customerData.address,
+        role: customerData.role || 'BUYER',
+        status: customerData.status || 'active',
       };
       setCustomers([...customers, newCustomer]);
     }
@@ -162,15 +155,6 @@ export default function CustomersPage() {
       case 'active': return 'success';
       case 'inactive': return 'destructive';
       case 'pending': return 'warning';
-      default: return 'default';
-    }
-  };
-
-  const getRoleColor = (role: string) => {
-    switch (role) {
-      case 'BUYER': return 'info';
-      case 'PRODUCER': return 'warning';
-      case 'ADMIN': return 'destructive';
       default: return 'default';
     }
   };
@@ -215,96 +199,86 @@ export default function CustomersPage() {
             </div>
           </div>
         ) : (
-          <div className="grid gap-6">
-            {filteredCustomers.map((customer) => (
-              <Card key={customer.id} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
-                        <Users className="w-6 h-6 text-emerald-600" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <h3 className="text-lg font-semibold text-slate-900">
-                            {customer.name}
-                          </h3>
-                          <Badge variant={getStatusColor(customer.status) as any}>
-                            {customer.status}
-                          </Badge>
-                          <Badge variant={getRoleColor(customer.role) as any}>
-                            {customer.role}
-                          </Badge>
-                        </div>
-                        
-                        <div className="space-y-1 text-sm text-slate-600">
-                          <div className="flex items-center space-x-2">
-                            <Mail className="w-4 h-4" />
-                            <span>{customer.email}</span>
+          <Card>
+            <CardContent className="p-0">
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-slate-200">
+                  <thead className="bg-slate-50">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                        Customer
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                        Contact
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                        Orders
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                        Status
+                      </th>
+                      <th scope="col" className="relative px-6 py-3">
+                        <span className="sr-only">Actions</span>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-slate-200">
+                    {filteredCustomers.map((customer) => (
+                      <tr key={customer.id}>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <Users className="h-8 w-8 text-slate-500 mr-3" />
+                            <div>
+                              <div className="text-sm font-medium text-slate-900">{customer.name}</div>
+                              <div className="text-xs text-slate-500">{customer.role}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                          <div className="flex items-center mb-1">
+                            <Mail className="h-4 w-4 mr-2 text-slate-400" /> {customer.email}
                           </div>
                           {customer.phone && (
-                            <div className="flex items-center space-x-2">
-                              <Phone className="w-4 h-4" />
-                              <span>{customer.phone}</span>
+                            <div className="flex items-center">
+                              <Phone className="h-4 w-4 mr-2 text-slate-400" /> {customer.phone}
                             </div>
                           )}
-                          {customer.address && (
-                            <div className="flex items-center space-x-2">
-                              <MapPin className="w-4 h-4" />
-                              <span className="truncate">{customer.address}</span>
-                            </div>
-                          )}
-                        </div>
-                        
-                        <div className="flex items-center space-x-6 mt-3 text-sm">
-                          <div>
-                            <span className="text-slate-500">Orders:</span>
-                            <span className="ml-1 font-medium">{customer.total_orders}</span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                          <div className="text-sm text-slate-900">
+                            {customer.total_orders} orders
                           </div>
-                          <div>
-                            <span className="text-slate-500">Total Spent:</span>
-                            <span className="ml-1 font-medium">${customer.total_spent}</span>
+                          <div className="text-xs text-slate-500">
+                            ${customer.total_spent.toFixed(2)} spent
                           </div>
-                          <div>
-                            <span className="text-slate-500">Joined:</span>
-                            <span className="ml-1 font-medium">{customer.created_at}</span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <Badge variant={getStatusColor(customer.status) as "success" | "destructive" | "warning" | "default"}>{customer.status}</Badge>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <div className="flex space-x-1">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleEditCustomer(customer)}
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleDeleteCustomer(customer)}
+                              className="text-red-600 hover:text-red-700"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex space-x-1">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleEditCustomer(customer)}
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleDeleteCustomer(customer)}
-                        className="text-red-600 hover:text-red-700"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-
-        {filteredCustomers.length === 0 && !loading && (
-          <Card>
-            <CardContent className="p-12 text-center">
-              <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">No customers found</h3>
-              <p className="text-slate-600">
-                {searchQuery ? 'Try adjusting your search criteria' : 'No customers registered yet'}
-              </p>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </CardContent>
           </Card>
         )}

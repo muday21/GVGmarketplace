@@ -13,14 +13,15 @@ import { ProducerFormDialog } from '@/components/admin/ProducerFormDialog';
 type Producer = {
   id: string;
   company_name: string;
-  contact_name: string;
+  contact_person: string;
   email: string;
   phone?: string;
   address?: string;
+  business_type: string;
   status: string;
   created_at: string;
   total_products: number;
-  total_sales: number;
+  verified: boolean;
 };
 
 export default function ProducersPage() {
@@ -43,62 +44,67 @@ export default function ProducersPage() {
         {
           id: '1',
           company_name: 'Sidama Coffee Cooperative',
-          contact_name: 'Alemayehu Tadesse',
-          email: 'contact@sidamacoffee.et',
-          phone: '+251-11-123-4567',
+          contact_person: 'Alemayehu Tadesse',
+          email: 'info@sidamacoffee.com',
+          phone: '+251-911-234-567',
           address: 'Sidama Zone, Southern Ethiopia',
+          business_type: 'Agricultural Cooperative',
           status: 'active',
-          created_at: '2024-08-15',
+          created_at: '2024-01-15',
           total_products: 8,
-          total_sales: 15000.00,
+          verified: true,
         },
         {
           id: '2',
           company_name: 'Tigray Agricultural Union',
-          contact_name: 'Meron Gebre',
-          email: 'info@tigrayagricultural.et',
-          phone: '+251-14-234-5678',
-          address: 'Tigray Region, Northern Ethiopia',
+          contact_person: 'Meron Gebre',
+          email: 'contact@tigrayagriculture.org',
+          phone: '+251-912-345-678',
+          address: 'Mekelle, Tigray Region',
+          business_type: 'Agricultural Union',
           status: 'active',
-          created_at: '2024-08-20',
+          created_at: '2024-02-20',
           total_products: 12,
-          total_sales: 22000.00,
+          verified: true,
         },
         {
           id: '3',
           company_name: 'Addis Leather Works',
-          contact_name: 'Kebede Assefa',
-          email: 'sales@addisleather.et',
-          phone: '+251-11-345-6789',
+          contact_person: 'Kebede Assefa',
+          email: 'sales@addisleather.com',
+          phone: '+251-913-456-789',
           address: 'Addis Ababa, Ethiopia',
+          business_type: 'Manufacturing',
           status: 'active',
-          created_at: '2024-09-01',
+          created_at: '2024-03-10',
           total_products: 15,
-          total_sales: 18000.00,
+          verified: true,
         },
         {
           id: '4',
           company_name: 'Shewa Farmers Association',
-          contact_name: 'Tigist Worku',
-          email: 'contact@shewafarmers.et',
-          phone: '+251-11-456-7890',
-          address: 'Shewa Zone, Central Ethiopia',
+          contact_person: 'Tigist Worku',
+          email: 'info@shewafarmers.org',
+          phone: '+251-914-567-890',
+          address: 'Debre Berhan, Amhara Region',
+          business_type: 'Farmers Association',
           status: 'pending',
-          created_at: '2024-09-10',
+          created_at: '2024-04-05',
           total_products: 5,
-          total_sales: 3500.00,
+          verified: false,
         },
         {
           id: '5',
-          company_name: 'Harar Honey Producers',
-          contact_name: 'Ahmed Ali',
-          email: 'info@hararhoney.et',
-          phone: '+251-25-567-8901',
-          address: 'Harar, Eastern Ethiopia',
-          status: 'active',
-          created_at: '2024-09-15',
-          total_products: 6,
-          total_sales: 8500.00,
+          company_name: 'Oromia Honey Producers',
+          contact_person: 'Dawit Bekele',
+          email: 'contact@oromiahoney.com',
+          phone: '+251-915-678-901',
+          address: 'Jimma, Oromia Region',
+          business_type: 'Honey Production',
+          status: 'inactive',
+          created_at: '2024-05-12',
+          total_products: 3,
+          verified: false,
         },
       ]);
       setLoading(false);
@@ -128,22 +134,28 @@ export default function ProducersPage() {
     }
   };
 
-  const handleFormSubmit = (producerData: any) => {
+  const handleFormSubmit = (producerData: Partial<Producer>) => {
     if (selectedProducer) {
       // Update existing producer
-      setProducers(producers.map(p => 
-        p.id === selectedProducer.id 
+      setProducers(producers.map(p =>
+        p.id === selectedProducer.id
           ? { ...p, ...producerData }
           : p
       ));
     } else {
       // Add new producer
       const newProducer: Producer = {
-        ...producerData,
         id: `producer-${Date.now()}`,
         created_at: new Date().toISOString().split('T')[0],
         total_products: 0,
-        total_sales: 0,
+        verified: false,
+        company_name: producerData.company_name || '',
+        contact_person: producerData.contact_person || '',
+        email: producerData.email || '',
+        phone: producerData.phone,
+        address: producerData.address,
+        business_type: producerData.business_type || '',
+        status: producerData.status || 'pending',
       };
       setProducers([...producers, newProducer]);
     }
@@ -153,8 +165,8 @@ export default function ProducersPage() {
 
   const filteredProducers = producers.filter(producer =>
     producer.company_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    producer.contact_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    producer.email.toLowerCase().includes(searchQuery.toLowerCase())
+    producer.contact_person.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    producer.business_type.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const getStatusColor = (status: string) => {
@@ -206,100 +218,84 @@ export default function ProducersPage() {
             </div>
           </div>
         ) : (
-          <div className="grid gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProducers.map((producer) => (
-              <Card key={producer.id} className="hover:shadow-lg transition-shadow">
+              <Card key={producer.id} className="overflow-hidden">
                 <CardContent className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
-                        <Building2 className="w-6 h-6 text-amber-600" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <h3 className="text-lg font-semibold text-slate-900">
-                            {producer.company_name}
-                          </h3>
-                          <Badge variant={getStatusColor(producer.status) as any}>
-                            {producer.status}
-                          </Badge>
-                        </div>
-                        
-                        <div className="space-y-1 text-sm text-slate-600 mb-3">
-                          <div className="flex items-center space-x-2">
-                            <span className="font-medium">Contact:</span>
-                            <span>{producer.contact_name}</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Mail className="w-4 h-4" />
-                            <span>{producer.email}</span>
-                          </div>
-                          {producer.phone && (
-                            <div className="flex items-center space-x-2">
-                              <Phone className="w-4 h-4" />
-                              <span>{producer.phone}</span>
-                            </div>
-                          )}
-                          {producer.address && (
-                            <div className="flex items-center space-x-2">
-                              <MapPin className="w-4 h-4" />
-                              <span className="truncate">{producer.address}</span>
-                            </div>
-                          )}
-                        </div>
-                        
-                        <div className="flex items-center space-x-6 text-sm">
-                          <div className="flex items-center space-x-1">
-                            <Package className="w-4 h-4 text-slate-500" />
-                            <span className="text-slate-500">Products:</span>
-                            <span className="font-medium">{producer.total_products}</span>
-                          </div>
-                          <div>
-                            <span className="text-slate-500">Total Sales:</span>
-                            <span className="ml-1 font-medium">${producer.total_sales}</span>
-                          </div>
-                          <div>
-                            <span className="text-slate-500">Joined:</span>
-                            <span className="ml-1 font-medium">{producer.created_at}</span>
-                          </div>
-                        </div>
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center">
+                      <Building2 className="h-8 w-8 text-emerald-600 mr-3" />
+                      <div>
+                        <h3 className="text-lg font-semibold text-slate-900">
+                          {producer.company_name}
+                        </h3>
+                        <p className="text-sm text-slate-600">{producer.business_type}</p>
                       </div>
                     </div>
-                    
-                    <div className="flex space-x-1">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleEditProducer(producer)}
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleDeleteProducer(producer)}
-                        className="text-red-600 hover:text-red-700"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+                    <div className="flex flex-col items-end space-y-1">
+                      <Badge variant={getStatusColor(producer.status) as "success" | "destructive" | "warning" | "default"}>
+                        {producer.status}
+                      </Badge>
+                      {producer.verified && (
+                        <Badge variant="success" className="text-xs">
+                          Verified
+                        </Badge>
+                      )}
                     </div>
+                  </div>
+
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-sm text-slate-600">
+                      <Mail className="h-4 w-4 mr-2 text-slate-400" />
+                      {producer.email}
+                    </div>
+                    {producer.phone && (
+                      <div className="flex items-center text-sm text-slate-600">
+                        <Phone className="h-4 w-4 mr-2 text-slate-400" />
+                        {producer.phone}
+                      </div>
+                    )}
+                    {producer.address && (
+                      <div className="flex items-center text-sm text-slate-600">
+                        <MapPin className="h-4 w-4 mr-2 text-slate-400" />
+                        {producer.address}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center text-sm text-slate-500">
+                      <Package className="h-4 w-4 mr-1" />
+                      {producer.total_products} products
+                    </div>
+                    <div className="text-xs text-slate-400">
+                      Joined: {producer.created_at}
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleEditProducer(producer)}
+                      className="flex-1"
+                    >
+                      <Edit className="w-4 h-4 mr-1" />
+                      Edit
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleDeleteProducer(producer)}
+                      className="text-red-600 hover:text-red-700"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
-        )}
-
-        {filteredProducers.length === 0 && !loading && (
-          <Card>
-            <CardContent className="p-12 text-center">
-              <Building2 className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">No producers found</h3>
-              <p className="text-slate-600">
-                {searchQuery ? 'Try adjusting your search criteria' : 'No producers registered yet'}
-              </p>
-            </CardContent>
-          </Card>
         )}
 
         <ProducerFormDialog

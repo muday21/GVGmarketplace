@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Card, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
-import { Plus, Search, Edit, Trash2, Package, CheckCircle, XCircle, Eye } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, CheckCircle, XCircle } from 'lucide-react';
 import { ProductFormDialog } from '@/components/admin/ProductFormDialog';
 import { DeleteConfirmDialog } from '@/components/admin/DeleteConfirmDialog';
 import { RejectionDialog } from '@/components/admin/RejectionDialog';
@@ -150,12 +150,14 @@ export default function ProductsPage() {
 
   const loadProducers = async () => {
     // Mock data - replace with real API calls later
-    setProducers([
-      { id: '1', company_name: 'Sidama Coffee Cooperative' },
-      { id: '2', company_name: 'Tigray Agricultural Union' },
-      { id: '3', company_name: 'Addis Leather Works' },
-      { id: '4', company_name: 'Shewa Farmers Association' },
-    ]);
+    setTimeout(() => {
+      setProducers([
+        { id: '1', company_name: 'Sidama Coffee Cooperative' },
+        { id: '2', company_name: 'Tigray Agricultural Union' },
+        { id: '3', company_name: 'Addis Leather Works' },
+        { id: '4', company_name: 'Shewa Farmers Association' },
+      ]);
+    }, 500);
   };
 
   const handleAddProduct = () => {
@@ -173,27 +175,6 @@ export default function ProductsPage() {
     setIsDeleteOpen(true);
   };
 
-  const handleFormSubmit = (formData: any) => {
-    if (selectedProduct) {
-      // Update existing product
-      setProducts(products.map(p => 
-        p.id === selectedProduct.id 
-          ? { ...p, ...formData, price: parseFloat(formData.price), stock_quantity: parseInt(formData.stock_quantity) }
-          : p
-      ));
-    } else {
-      // Add new product
-      const newProduct: Product = {
-        id: Date.now().toString(),
-        ...formData,
-        price: parseFloat(formData.price),
-        stock_quantity: parseInt(formData.stock_quantity),
-        created_at: new Date().toISOString().split('T')[0],
-      };
-      setProducts([...products, newProduct]);
-    }
-  };
-
   const handleDeleteConfirm = () => {
     if (selectedProduct) {
       setProducts(products.filter(p => p.id !== selectedProduct.id));
@@ -202,12 +183,42 @@ export default function ProductsPage() {
     }
   };
 
+  const handleFormSubmit = (productData: Partial<Product>) => {
+    if (selectedProduct) {
+      // Update existing product
+      setProducts(products.map(p =>
+        p.id === selectedProduct.id
+          ? { ...p, ...productData }
+          : p
+      ));
+    } else {
+      // Add new product
+      const newProduct: Product = {
+        id: `prod-${Date.now()}`,
+        created_at: new Date().toISOString().split('T')[0],
+        approval_status: 'pending',
+        submitted_at: new Date().toISOString().split('T')[0],
+        name: productData.name || '',
+        description: productData.description || '',
+        category: productData.category || '',
+        price: productData.price || 0,
+        stock_quantity: productData.stock_quantity || 0,
+        producer_id: productData.producer_id || null,
+        image_url: productData.image_url || '',
+        status: productData.status || 'pending',
+      };
+      setProducts([...products, newProduct]);
+    }
+    setIsFormOpen(false);
+    setSelectedProduct(null);
+  };
+
   const handleApproveProduct = (product: Product) => {
-    setProducts(products.map(p => 
-      p.id === product.id 
-        ? { 
-            ...p, 
-            approval_status: 'approved', 
+    setProducts(products.map(p =>
+      p.id === product.id
+        ? {
+            ...p,
+            approval_status: 'approved',
             status: 'active',
             approved_at: new Date().toISOString().split('T')[0],
             rejected_at: undefined,
@@ -218,11 +229,11 @@ export default function ProductsPage() {
   };
 
   const handleRejectProduct = (product: Product, reason: string) => {
-    setProducts(products.map(p => 
-      p.id === product.id 
-        ? { 
-            ...p, 
-            approval_status: 'rejected', 
+    setProducts(products.map(p =>
+      p.id === product.id
+        ? {
+            ...p,
+            approval_status: 'rejected',
             status: 'inactive',
             rejected_at: new Date().toISOString().split('T')[0],
             rejection_reason: reason,
@@ -235,15 +246,15 @@ export default function ProductsPage() {
   const filteredProducts = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          product.category.toLowerCase().includes(searchQuery.toLowerCase());
-    
+
     // If search query is empty, show all products
     if (!searchQuery) return true;
-    
+
     // If search query matches approval status, filter by that
     if (searchQuery === 'pending' || searchQuery === 'approved' || searchQuery === 'rejected') {
       return product.approval_status === searchQuery;
     }
-    
+
     // Otherwise, use text search
     return matchesSearch;
   });
@@ -295,29 +306,29 @@ export default function ProductsPage() {
                 </div>
               </div>
               <div className="flex space-x-2">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   size="sm"
                   onClick={() => setSearchQuery('')}
                 >
                   All Products
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   size="sm"
                   onClick={() => setSearchQuery('pending')}
                 >
                   Pending Review
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   size="sm"
                   onClick={() => setSearchQuery('approved')}
                 >
                   Approved
                 </Button>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   size="sm"
                   onClick={() => setSearchQuery('rejected')}
                 >
@@ -336,29 +347,29 @@ export default function ProductsPage() {
             </div>
           </div>
         ) : (
-          <div className="grid gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredProducts.map((product) => (
-              <Card key={product.id} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-20 h-20 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+              <Card key={product.id} className="overflow-hidden">
+                <CardContent className="p-0">
+                  <div className="flex flex-col h-full">
+                    <div className="relative h-48 w-full">
                       <img
-                        src={product.image_url}
+                        src={product.image_url || 'https://via.placeholder.com/400x300?text=No+Image'}
                         alt={product.name}
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <div className="flex-1 min-w-0">
+                    <div className="flex-1 p-4">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <div className="flex items-center space-x-2 mb-2">
                               <h3 className="text-lg font-semibold text-slate-900">
                                 {product.name}
                               </h3>
-                              <Badge variant={getStatusColor(product.status) as any}>
+                              <Badge variant={getStatusColor(product.status) as "success" | "destructive" | "warning" | "default"}>
                                 {product.status}
                               </Badge>
-                              <Badge variant={getApprovalStatusColor(product.approval_status) as any}>
+                              <Badge variant={getApprovalStatusColor(product.approval_status) as "success" | "destructive" | "warning" | "default"}>
                                 {product.approval_status}
                               </Badge>
                             </div>
@@ -376,12 +387,12 @@ export default function ProductsPage() {
                               </div>
                             )}
                             <div className="text-xs text-slate-400 mt-1">
-                              Submitted: {product.submitted_at} 
+                              Submitted: {product.submitted_at}
                               {product.approved_at && ` • Approved: ${product.approved_at}`}
                               {product.rejected_at && ` • Rejected: ${product.rejected_at}`}
                             </div>
                           </div>
-                          <div className="flex flex-col space-y-2">
+                          <div className="flex flex-col space-y-2 ml-4">
                             {product.approval_status === 'pending' && (
                               <div className="flex space-x-1">
                                 <Button
@@ -428,24 +439,6 @@ export default function ProductsPage() {
               </Card>
             ))}
           </div>
-        )}
-
-        {filteredProducts.length === 0 && !loading && (
-          <Card>
-            <CardContent className="p-12 text-center">
-              <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">No products found</h3>
-              <p className="text-slate-600 mb-4">
-                {searchQuery ? 'Try adjusting your search criteria' : 'Get started by adding your first product'}
-              </p>
-              {!searchQuery && (
-                <Button onClick={handleAddProduct}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Product
-                </Button>
-              )}
-            </CardContent>
-          </Card>
         )}
 
         <ProductFormDialog

@@ -8,9 +8,18 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 interface AdminUserFormDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (user: any) => void;
-  user?: any;
+  onSubmit: (user: Partial<AdminUser>) => void;
+  user?: AdminUser | null;
 }
+
+type AdminUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  status: string;
+  permissions: string[];
+};
 
 export function AdminUserFormDialog({ 
   isOpen, 

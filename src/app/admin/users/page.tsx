@@ -17,7 +17,7 @@ type AdminUser = {
   role: string;
   status: string;
   created_at: string;
-  last_login: string;
+  last_login?: string;
   permissions: string[];
 };
 
@@ -41,41 +41,41 @@ export default function AdminUsersPage() {
         {
           id: '1',
           name: 'Admin User',
-          email: 'admin@example.com',
+          email: 'admin@gvgmarketplace.com',
           role: 'SUPER_ADMIN',
           status: 'active',
-          created_at: '2024-08-01',
-          last_login: '2024-10-27',
+          created_at: '2024-01-01',
+          last_login: '2024-10-25',
           permissions: ['all'],
         },
         {
           id: '2',
           name: 'John Smith',
-          email: 'john.smith@company.com',
+          email: 'john.smith@gvgmarketplace.com',
           role: 'ADMIN',
           status: 'active',
-          created_at: '2024-09-15',
-          last_login: '2024-10-26',
+          created_at: '2024-02-15',
+          last_login: '2024-10-24',
           permissions: ['products', 'customers', 'producers'],
         },
         {
           id: '3',
           name: 'Sarah Johnson',
-          email: 'sarah.johnson@company.com',
+          email: 'sarah.johnson@gvgmarketplace.com',
           role: 'MODERATOR',
           status: 'active',
-          created_at: '2024-09-20',
-          last_login: '2024-10-25',
+          created_at: '2024-03-20',
+          last_login: '2024-10-23',
           permissions: ['products', 'customers'],
         },
         {
           id: '4',
           name: 'Mike Wilson',
-          email: 'mike.wilson@company.com',
+          email: 'mike.wilson@gvgmarketplace.com',
           role: 'ADMIN',
           status: 'inactive',
-          created_at: '2024-08-30',
-          last_login: '2024-10-15',
+          created_at: '2024-04-10',
+          last_login: '2024-09-15',
           permissions: ['products', 'producers'],
         },
       ]);
@@ -84,10 +84,6 @@ export default function AdminUsersPage() {
   };
 
   const handleDeleteUser = (user: AdminUser) => {
-    if (user.role === 'SUPER_ADMIN') {
-      alert('Cannot delete Super Admin!');
-      return;
-    }
     setSelectedUser(user);
     setIsDeleteOpen(true);
   };
@@ -110,22 +106,24 @@ export default function AdminUsersPage() {
     }
   };
 
-  const handleFormSubmit = (userData: any) => {
+  const handleFormSubmit = (userData: Partial<AdminUser>) => {
     if (selectedUser) {
       // Update existing user
-      setAdminUsers(adminUsers.map(u => 
-        u.id === selectedUser.id 
+      setAdminUsers(adminUsers.map(u =>
+        u.id === selectedUser.id
           ? { ...u, ...userData }
           : u
       ));
     } else {
       // Add new user
       const newUser: AdminUser = {
-        ...userData,
         id: `admin-${Date.now()}`,
         created_at: new Date().toISOString().split('T')[0],
-        last_login: 'Never',
-        permissions: userData.role === 'SUPER_ADMIN' ? ['all'] : ['read', 'write'],
+        name: userData.name || '',
+        email: userData.email || '',
+        role: userData.role || 'ADMIN',
+        status: userData.status || 'active',
+        permissions: userData.permissions || [],
       };
       setAdminUsers([...adminUsers, newUser]);
     }
@@ -144,15 +142,6 @@ export default function AdminUsersPage() {
       case 'active': return 'success';
       case 'inactive': return 'destructive';
       case 'pending': return 'warning';
-      default: return 'default';
-    }
-  };
-
-  const getRoleColor = (role: string) => {
-    switch (role) {
-      case 'SUPER_ADMIN': return 'destructive';
-      case 'ADMIN': return 'warning';
-      case 'MODERATOR': return 'info';
       default: return 'default';
     }
   };
@@ -206,96 +195,76 @@ export default function AdminUsersPage() {
             </div>
           </div>
         ) : (
-          <div className="grid gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredUsers.map((user) => (
-              <Card key={user.id} className="hover:shadow-lg transition-shadow">
+              <Card key={user.id} className="overflow-hidden">
                 <CardContent className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="flex items-center">
+                      <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center mr-3">
                         {getRoleIcon(user.role)}
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-2 mb-2">
-                          <h3 className="text-lg font-semibold text-slate-900">
-                            {user.name}
-                          </h3>
-                          <Badge variant={getStatusColor(user.status) as any}>
-                            {user.status}
-                          </Badge>
-                          <Badge variant={getRoleColor(user.role) as any}>
-                            {user.role}
-                          </Badge>
-                        </div>
-                        
-                        <div className="space-y-1 text-sm text-slate-600 mb-3">
-                          <div className="flex items-center space-x-2">
-                            <Mail className="w-4 h-4" />
-                            <span>{user.email}</span>
-                          </div>
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <div className="text-sm">
-                            <span className="text-slate-500">Permissions:</span>
-                            <div className="flex flex-wrap gap-1 mt-1">
-                              {user.permissions.map((permission) => (
-                                <Badge key={permission} variant="outline" className="text-xs">
-                                  {permission}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                          
-                          <div className="flex items-center space-x-6 text-sm">
-                            <div>
-                              <span className="text-slate-500">Created:</span>
-                              <span className="ml-1 font-medium">{user.created_at}</span>
-                            </div>
-                            <div>
-                              <span className="text-slate-500">Last Login:</span>
-                              <span className="ml-1 font-medium">{user.last_login}</span>
-                            </div>
-                          </div>
-                        </div>
+                      <div>
+                        <h3 className="text-lg font-semibold text-slate-900">
+                          {user.name}
+                        </h3>
+                        <p className="text-sm text-slate-600">{user.role}</p>
                       </div>
                     </div>
-                    
-                    <div className="flex space-x-1">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleEditUser(user)}
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleDeleteUser(user)}
-                        className="text-red-600 hover:text-red-700"
-                        disabled={user.role === 'SUPER_ADMIN'}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
+                    <Badge variant={getStatusColor(user.status) as "success" | "destructive" | "warning" | "default"}>
+                      {user.status}
+                    </Badge>
+                  </div>
+
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-sm text-slate-600">
+                      <Mail className="h-4 w-4 mr-2 text-slate-400" />
+                      {user.email}
                     </div>
+                    <div className="text-sm text-slate-500">
+                      Created: {user.created_at}
+                    </div>
+                    {user.last_login && (
+                      <div className="text-sm text-slate-500">
+                        Last login: {user.last_login}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="mb-4">
+                    <p className="text-sm font-medium text-slate-700 mb-2">Permissions:</p>
+                    <div className="flex flex-wrap gap-1">
+                      {user.permissions.map((permission, index) => (
+                        <Badge key={index} variant="outline" className="text-xs">
+                          {permission}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleEditUser(user)}
+                      className="flex-1"
+                    >
+                      <Edit className="w-4 h-4 mr-1" />
+                      Edit
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleDeleteUser(user)}
+                      className="text-red-600 hover:text-red-700"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
             ))}
           </div>
-        )}
-
-        {filteredUsers.length === 0 && !loading && (
-          <Card>
-            <CardContent className="p-12 text-center">
-              <UserCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-slate-900 mb-2">No admin users found</h3>
-              <p className="text-slate-600">
-                {searchQuery ? 'Try adjusting your search criteria' : 'No admin users registered yet'}
-              </p>
-            </CardContent>
-          </Card>
         )}
 
         <AdminUserFormDialog

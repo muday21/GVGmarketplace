@@ -347,13 +347,15 @@ export default function Addresses() {
                         required
                       />
                     </div>
-                    <Input
-                      label="Address Label"
-                      placeholder="e.g., Home Address, Office"
-                      value={newAddress.label}
-                      onChange={(e) => setNewAddress({...newAddress, label: e.target.value})}
-                      required
-                    />
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Address Label</label>
+                      <Input
+                        placeholder="e.g., Home Address, Office"
+                        value={newAddress.label}
+                        onChange={(e) => setNewAddress({...newAddress, label: e.target.value})}
+                        required
+                      />
+                    </div>
                   </div>
 
                   {/* Location Information */}
@@ -380,13 +382,15 @@ export default function Addresses() {
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium mb-2">State/Zone</label>
                       <Input
-                        label="State/Zone"
                         placeholder="e.g., Addis Ababa"
                         value={newAddress.state}
                         onChange={(e) => setNewAddress({...newAddress, state: e.target.value})}
                         required
                       />
+                    </div>
                       <Select
                         label="City"
                         value={newAddress.city}
@@ -396,65 +400,79 @@ export default function Addresses() {
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Kebele</label>
+                        <Input
+                          placeholder="e.g., Kebele 01"
+                          value={newAddress.kebele}
+                          onChange={(e) => setNewAddress({...newAddress, kebele: e.target.value})}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Woreda</label>
+                        <Input
+                          placeholder="e.g., Woreda 03"
+                          value={newAddress.woreda}
+                          onChange={(e) => setNewAddress({...newAddress, woreda: e.target.value})}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">ZIP Code</label>
                       <Input
-                        label="Kebele"
-                        placeholder="e.g., Kebele 01"
-                        value={newAddress.kebele}
-                        onChange={(e) => setNewAddress({...newAddress, kebele: e.target.value})}
-                        required
-                      />
-                      <Input
-                        label="Woreda"
-                        placeholder="e.g., Woreda 03"
-                        value={newAddress.woreda}
-                        onChange={(e) => setNewAddress({...newAddress, woreda: e.target.value})}
+                        placeholder="e.g., 1000"
+                        value={newAddress.zipCode}
+                        onChange={(e) => setNewAddress({...newAddress, zipCode: e.target.value})}
                       />
                     </div>
-                    <Input
-                      label="ZIP Code"
-                      placeholder="e.g., 1000"
-                      value={newAddress.zipCode}
-                      onChange={(e) => setNewAddress({...newAddress, zipCode: e.target.value})}
-                    />
                   </div>
 
                   {/* Contact Information */}
                   <div className="space-y-4">
                     <h3 className="font-medium text-slate-900">Contact Information</h3>
                     <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Phone Number</label>
+                        <Input
+                          placeholder="+251 911 234 567"
+                          value={newAddress.phoneNumber}
+                          onChange={(e) => setNewAddress({...newAddress, phoneNumber: e.target.value})}
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-2">Additional Phone (Optional)</label>
+                        <Input
+                          placeholder="+251 911 234 568"
+                          value={newAddress.additionalPhone}
+                          onChange={(e) => setNewAddress({...newAddress, additionalPhone: e.target.value})}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Email Address</label>
                       <Input
-                        label="Phone Number"
-                        placeholder="+251 911 234 567"
-                        value={newAddress.phoneNumber}
-                        onChange={(e) => setNewAddress({...newAddress, phoneNumber: e.target.value})}
+                        type="email"
+                        placeholder="john.doe@example.com"
+                        value={newAddress.email}
+                        onChange={(e) => setNewAddress({...newAddress, email: e.target.value})}
                         required
                       />
-                      <Input
-                        label="Additional Phone (Optional)"
-                        placeholder="+251 911 234 568"
-                        value={newAddress.additionalPhone}
-                        onChange={(e) => setNewAddress({...newAddress, additionalPhone: e.target.value})}
-                      />
                     </div>
-                    <Input
-                      label="Email Address"
-                      type="email"
-                      placeholder="john.doe@example.com"
-                      value={newAddress.email}
-                      onChange={(e) => setNewAddress({...newAddress, email: e.target.value})}
-                      required
-                    />
                   </div>
 
                   {/* Additional Information */}
                   <div className="space-y-4">
                     <h3 className="font-medium text-slate-900">Additional Information</h3>
-                    <Input
-                      label="Additional Details (Optional)"
-                      placeholder="e.g., House number, landmarks, special instructions"
-                      value={newAddress.additionalInfo}
-                      onChange={(e) => setNewAddress({...newAddress, additionalInfo: e.target.value})}
-                    />
+                    <div>
+                      <label className="block text-sm font-medium mb-2">Additional Details (Optional)</label>
+                      <Input
+                        placeholder="e.g., House number, landmarks, special instructions"
+                        value={newAddress.additionalInfo}
+                        onChange={(e) => setNewAddress({...newAddress, additionalInfo: e.target.value})}
+                      />
+                    </div>
                   </div>
 
                   {/* Action Buttons */}

@@ -28,7 +28,7 @@ export default function SignIn() {
       } else {
         alert(result.error);
       }
-    } catch (error) {
+    } catch (_error) {
       alert("Login failed. Please try again.");
     } finally {
       setIsLoading(false);
@@ -60,9 +60,9 @@ export default function SignIn() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative">
+              <label className="block text-sm font-medium mb-2">{t('auth.email')}</label>
               <Mail className="absolute left-3 top-9 w-5 h-5 text-slate-400" />
               <Input
-                label={t('auth.email')}
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -72,9 +72,9 @@ export default function SignIn() {
               />
             </div>
             <div className="relative">
+              <label className="block text-sm font-medium mb-2">{t('auth.password')}</label>
               <Lock className="absolute left-3 top-9 w-5 h-5 text-slate-400" />
               <Input
-                label={t('auth.password')}
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

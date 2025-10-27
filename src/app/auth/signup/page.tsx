@@ -46,7 +46,7 @@ export default function SignUp() {
       } else {
         alert("Signup failed. Please try again.");
       }
-    } catch (error) {
+    } catch (_error) {
       alert("Signup failed. Please try again.");
     } finally {
       setIsLoading(false);
@@ -63,9 +63,9 @@ export default function SignUp() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="relative">
+              <label className="block text-sm font-medium mb-2">{t('auth.name')}</label>
               <UserIcon className="absolute left-3 top-9 w-5 h-5 text-slate-400" />
               <Input
-                label={t('auth.name')}
                 type="text"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -75,9 +75,9 @@ export default function SignUp() {
               />
             </div>
             <div className="relative">
+              <label className="block text-sm font-medium mb-2">{t('auth.email')}</label>
               <Mail className="absolute left-3 top-9 w-5 h-5 text-slate-400" />
               <Input
-                label={t('auth.email')}
                 type="email"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -98,9 +98,9 @@ export default function SignUp() {
               required
             />
             <div className="relative">
+              <label className="block text-sm font-medium mb-2">{t('auth.password')}</label>
               <Lock className="absolute left-3 top-9 w-5 h-5 text-slate-400" />
               <Input
-                label={t('auth.password')}
                 type="password"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -110,9 +110,9 @@ export default function SignUp() {
               />
             </div>
             <div className="relative">
+              <label className="block text-sm font-medium mb-2">{t('auth.confirmPassword')}</label>
               <Lock className="absolute left-3 top-9 w-5 h-5 text-slate-400" />
               <Input
-                label={t('auth.confirmPassword')}
                 type="password"
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}

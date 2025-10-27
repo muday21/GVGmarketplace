@@ -6,7 +6,7 @@ async function setupDatabase() {
   const connectionString = "postgresql://neondb_owner:npg_KI59CvLicFPo@ep-lively-meadow-ah4avsi6-pooler.c-3.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require";
   
   const client = postgres(connectionString);
-  const db = drizzle(client, { schema });
+  const _db = drizzle(client, { schema });
 
   try {
     console.log("Setting up database schema...");

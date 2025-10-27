@@ -11,7 +11,7 @@ async function initDatabase() {
   }
 
   const client = postgres(connectionString);
-  const db = drizzle(client, { schema });
+  const _db = drizzle(client, { schema });
 
   try {
     console.log("Database connection successful!");

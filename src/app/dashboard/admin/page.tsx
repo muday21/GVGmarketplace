@@ -1,11 +1,9 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { AdminLayout } from '@/components/admin/AdminLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
-import { Button } from '@/components/ui/Button';
-import { Package, Users, Building2, UserCircle, TrendingUp, ShoppingBag, Plus, Eye, Settings } from 'lucide-react';
+import { Package, Users, Building2, UserCircle, TrendingUp, ShoppingBag } from 'lucide-react';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState({

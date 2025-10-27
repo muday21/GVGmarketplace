@@ -8,9 +8,20 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 interface ProducerFormDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (producer: any) => void;
-  producer?: any;
+  onSubmit: (producer: Partial<Producer>) => void;
+  producer?: Producer | null;
 }
+
+type Producer = {
+  id: string;
+  company_name: string;
+  contact_person: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  business_type: string;
+  status: string;
+};
 
 export function ProducerFormDialog({
   isOpen,
@@ -20,7 +31,7 @@ export function ProducerFormDialog({
 }: ProducerFormDialogProps) {
   const [formData, setFormData] = useState({
     company_name: '',
-    contact_name: '',
+    contact_person: '',
     email: '',
     phone: '',
     address: '',
@@ -31,7 +42,7 @@ export function ProducerFormDialog({
     if (producer) {
       setFormData({
         company_name: producer.company_name || '',
-        contact_name: producer.contact_name || '',
+        contact_person: producer.contact_person || '',
         email: producer.email || '',
         phone: producer.phone || '',
         address: producer.address || '',
@@ -40,7 +51,7 @@ export function ProducerFormDialog({
     } else {
       setFormData({
         company_name: '',
-        contact_name: '',
+        contact_person: '',
         email: '',
         phone: '',
         address: '',
@@ -80,8 +91,8 @@ export function ProducerFormDialog({
                 <div>
                   <label className="block text-sm font-medium mb-2">Contact Name</label>
                   <Input
-                    value={formData.contact_name}
-                    onChange={(e) => setFormData({ ...formData, contact_name: e.target.value })}
+                    value={formData.contact_person}
+                    onChange={(e) => setFormData({ ...formData, contact_person: e.target.value })}
                     placeholder="Enter contact person name"
                     required
                   />

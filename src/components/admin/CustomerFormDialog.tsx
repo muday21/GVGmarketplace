@@ -8,9 +8,19 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
 interface CustomerFormDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (customer: any) => void;
-  customer?: any;
+  onSubmit: (customer: Partial<Customer>) => void;
+  customer?: Customer | null;
 }
+
+type Customer = {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  address?: string;
+  role: string;
+  status: string;
+};
 
 export function CustomerFormDialog({ 
   isOpen, 
