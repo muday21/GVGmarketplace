@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, lazy } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { Shield, TrendingUp, Globe, Package, Star, Quote } from 'lucide-react';
@@ -8,33 +9,41 @@ import { Button } from '../components/ui/Button';
 import { Card, CardContent } from '../components/ui/Card';
 import { Layout } from '../components/layout/Layout';
 
-// Lazy load dashboard components for better performance
-const BuyerDashboard = lazy(() => import('./dashboard/buyer/page'));
-const ProducerDashboard = lazy(() => import('./dashboard/producer/page'));
-const AdminDashboard = lazy(() => import('./dashboard/admin/page'));
-
 export default function Home() {
   const { t } = useTranslation();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userRole, setUserRole] = useState('');
+  const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const authStatus = localStorage.getItem('isAuthenticated') === 'true';
-    const role = localStorage.getItem('userRole') || '';
-    setIsAuthenticated(authStatus);
-    setUserRole(role);
-  }, []);
+    // Check if user is already logged in
+    const isAuthenticated = localStorage.getItem('isAuthenticated');
+    const userRole = localStorage.getItem('userRole');
 
-  // If user is authenticated, show their dashboard
-  if (isAuthenticated) {
-    if (userRole === 'PRODUCER') {
-      return <ProducerDashboard />;
-    } else if (userRole === 'ADMIN') {
-      return <AdminDashboard />;
-    } else {
-      return <BuyerDashboard />; // Default for BUYER role
+    if (isAuthenticated === 'true' && userRole) {
+      setIsLoggedIn(true);
+      // Redirect to appropriate dashboard based on role
+      switch (userRole) {
+        case 'PRODUCER':
+          router.push('/dashboard/producer');
+          break;
+        case 'ADMIN':
+          router.push('/dashboard/admin');
+          break;
+        case 'BUYER':
+          router.push('/dashboard/buyer');
+          break;
+        default:
+          // Stay on homepage for unknown roles
+          break;
+      }
     }
-  }
+  }, [router]);
+
+  const handleSignOut = () => {
+    localStorage.clear();
+    setIsLoggedIn(false);
+    router.refresh();
+  };
 
   const features = [
     {
@@ -127,6 +136,20 @@ export default function Home() {
           </div>
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 text-white">
+            {/* Sign Out Button - Only show if logged in */}
+            {isLoggedIn && (
+              <div className="absolute top-4 right-4">
+                <Button 
+                  onClick={handleSignOut}
+                  variant="outline" 
+                  size="sm" 
+                  className="bg-white bg-opacity-10 backdrop-blur-sm border-white border-opacity-30 text-white hover:bg-white hover:bg-opacity-20"
+                >
+                  Sign Out
+                </Button>
+              </div>
+            )}
+            
             <div className="max-w-4xl animate-fade-in">
               <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight animate-slide-up">
                 {t('hero.title')}

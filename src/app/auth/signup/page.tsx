@@ -9,6 +9,7 @@ import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
 import { Select } from '../../../components/ui/Select';
 import { Card, CardHeader, CardContent } from '../../../components/ui/Card';
+import { demoAuth } from '../../../lib/demo-auth';
 
 export default function SignUp() {
   const { t } = useTranslation();
@@ -32,19 +33,24 @@ export default function SignUp() {
     
     setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const result = await demoAuth.signUp(
+        formData.email, 
+        formData.password, 
+        formData.name, 
+        formData.role
+      );
+      
+      if (result.success) {
+        router.push("/dashboard");
+      } else {
+        alert("Signup failed. Please try again.");
+      }
+    } catch (error) {
+      alert("Signup failed. Please try again.");
+    } finally {
       setIsLoading(false);
-      
-      // Store user info in localStorage (for demo purposes)
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('userRole', formData.role);
-      localStorage.setItem('userEmail', formData.email);
-      localStorage.setItem('userName', formData.name);
-      
-      // Redirect to home page (which will show the appropriate dashboard)
-      router.push('/');
-    }, 1500);
+    }
   };
 
   return (
@@ -87,6 +93,7 @@ export default function SignUp() {
               options={[
                 { value: 'BUYER', label: t('auth.buyer') },
                 { value: 'PRODUCER', label: t('auth.producer') },
+                { value: 'ADMIN', label: 'Administrator' },
               ]}
               required
             />

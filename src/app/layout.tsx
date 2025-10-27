@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { I18nProvider } from './i18n-provider';
 import { CartProvider } from '../contexts/CartContext';
+import { AuthProvider } from '../components/providers/AuthProvider';
 import { PerformanceMonitor } from '../components/PerformanceMonitor';
 import { Suspense } from 'react';
 
@@ -59,7 +60,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://images.pexels.com" />
         <link rel="dns-prefetch" href="https://images.pexels.com" />
@@ -69,11 +70,13 @@ export default function RootLayout({
       <body className="bg-gray-100 min-h-screen">
         <PerformanceMonitor />
         <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Loading...</div>}>
-          <I18nProvider>
-            <CartProvider>
-              {children}
-            </CartProvider>
-          </I18nProvider>
+          <AuthProvider>
+            <I18nProvider>
+              <CartProvider>
+                {children}
+              </CartProvider>
+            </I18nProvider>
+          </AuthProvider>
         </Suspense>
       </body>
     </html>

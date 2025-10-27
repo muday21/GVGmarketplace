@@ -1,77 +1,164 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Users, Package, ShoppingCart, TrendingUp, MessageCircle } from 'lucide-react';
-import { Button } from '../../../components/ui/Button';
-import { CardHeader } from '../../../components/ui/Card';
-import { Card, CardContent } from '../../../components/ui/Card';
-import { Layout } from '../../../components/layout/Layout';
-import { ChatWidget } from '../../../components/chat/ChatWidget';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { AdminLayout } from '@/components/admin/AdminLayout';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { Package, Users, Building2, UserCircle, TrendingUp, ShoppingBag, Plus, Eye, Settings } from 'lucide-react';
 
 export default function AdminDashboard() {
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [stats, setStats] = useState({
+    products: 0,
+    customers: 0,
+    producers: 0,
+    adminUsers: 0,
+  });
+  const [loading, setLoading] = useState(true);
 
-  const stats = [
-    { label: 'Total Users', value: 1250, icon: Users, color: 'text-blue-600' },
-    { label: 'Total Products', value: 450, icon: Package, color: 'text-emerald-600' },
-    { label: 'Total Orders', value: 3200, icon: ShoppingCart, color: 'text-purple-600' },
-    { label: 'Revenue', value: '$125K', icon: TrendingUp, color: 'text-green-600' },
+  useEffect(() => {
+    // Mock data for now - you'll replace with MySQL calls later
+    setTimeout(() => {
+      setStats({
+        products: 45,
+        customers: 1250,
+        producers: 12,
+        adminUsers: 3,
+      });
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  const statCards = [
+    {
+      label: 'Total Products',
+      value: stats.products,
+      icon: Package,
+      color: 'text-blue-600',
+      bgColor: 'bg-blue-50',
+    },
+    {
+      label: 'Total Customers',
+      value: stats.customers,
+      icon: Users,
+      color: 'text-emerald-600',
+      bgColor: 'bg-emerald-50',
+    },
+    {
+      label: 'Total Producers',
+      value: stats.producers,
+      icon: Building2,
+      color: 'text-amber-600',
+      bgColor: 'bg-amber-50',
+    },
+    {
+      label: 'Admin Users',
+      value: stats.adminUsers,
+      icon: UserCircle,
+      color: 'text-purple-600',
+      bgColor: 'bg-purple-50',
+    },
   ];
 
   return (
-    <>
-    <Layout>
-      <div className="min-h-screen bg-slate-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-slate-900 mb-2">Admin Dashboard</h1>
-            <p className="text-slate-600">Monitor and manage the platform</p>
-          </div>
+    <AdminLayout>
+      <div className="p-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-slate-900 mb-2">Admin Dashboard</h1>
+          <p className="text-slate-600">Welcome to the GVG Admin Portal</p>
+        </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {stats.map((stat, index) => (
-              <Card key={index}>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-slate-600 mb-1">{stat.label}</p>
-                      <p className="text-3xl font-bold text-slate-900">{stat.value}</p>
+        {loading ? (
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
+              <p className="mt-4 text-slate-600">Loading dashboard...</p>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              {statCards.map((stat, index) => (
+                <Card key={index} className="hover:shadow-lg transition-shadow">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-slate-600 mb-1">{stat.label}</p>
+                        <p className="text-3xl font-bold text-slate-900">{stat.value}</p>
+                      </div>
+                      <div className={`p-3 rounded-lg ${stat.bgColor}`}>
+                        <stat.icon className={`w-6 h-6 ${stat.color}`} />
+                      </div>
                     </div>
-                    <div className={`p-3 bg-slate-100 rounded-lg ${stat.color}`}>
-                      <stat.icon className="w-6 h-6" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="grid lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Quick Actions</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <a
+                    href="/admin/products"
+                    className="flex items-center p-4 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors"
+                  >
+                    <Package className="w-5 h-5 text-emerald-600 mr-3" />
+                    <span className="font-medium text-slate-900">Manage Products</span>
+                  </a>
+                  <a
+                    href="/admin/customers"
+                    className="flex items-center p-4 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors"
+                  >
+                    <Users className="w-5 h-5 text-emerald-600 mr-3" />
+                    <span className="font-medium text-slate-900">Manage Customers</span>
+                  </a>
+                  <a
+                    href="/admin/producers"
+                    className="flex items-center p-4 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors"
+                  >
+                    <Building2 className="w-5 h-5 text-emerald-600 mr-3" />
+                    <span className="font-medium text-slate-900">Manage Producers</span>
+                  </a>
+                  <a
+                    href="/admin/users"
+                    className="flex items-center p-4 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors"
+                  >
+                    <UserCircle className="w-5 h-5 text-emerald-600 mr-3" />
+                    <span className="font-medium text-slate-900">Manage Admin Users</span>
+                  </a>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Platform Overview</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between p-4 bg-emerald-50 rounded-lg">
+                      <div className="flex items-center">
+                        <TrendingUp className="w-5 h-5 text-emerald-600 mr-3" />
+                        <span className="text-sm text-slate-700">Platform Status</span>
+                      </div>
+                      <span className="text-sm font-medium text-emerald-600">Active</span>
+                    </div>
+                    <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
+                      <div className="flex items-center">
+                        <ShoppingBag className="w-5 h-5 text-blue-600 mr-3" />
+                        <span className="text-sm text-slate-700">Active Products</span>
+                      </div>
+                      <span className="text-sm font-medium text-blue-600">{stats.products}</span>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-
-          <div className="mt-8">
-            <Card>
-              <CardHeader>
-                <h2 className="text-lg font-semibold text-slate-900">Need Help?</h2>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-start"
-                  onClick={() => setIsChatOpen(true)}
-                >
-                  <MessageCircle className="w-4 h-4 mr-2" />
-                  Live Chat
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+            </div>
+          </>
+        )}
       </div>
-        </Layout>
-        <ChatWidget 
-          showFloatingButton={false}
-          isOpen={isChatOpen}
-          onToggle={() => setIsChatOpen(!isChatOpen)}
-        />
-      </>
-      );
-    }
-
+    </AdminLayout>
+  );
+}

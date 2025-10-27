@@ -8,6 +8,7 @@ import { Mail, Lock } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
 import { Card, CardHeader, CardContent } from '../../../components/ui/Card';
+import { demoAuth } from '../../../lib/demo-auth';
 
 export default function SignIn() {
   const { t } = useTranslation();
@@ -20,21 +21,18 @@ export default function SignIn() {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const result = await demoAuth.signIn(email, password);
+      if (result.success) {
+        router.push("/dashboard");
+      } else {
+        alert(result.error);
+      }
+    } catch (error) {
+      alert("Login failed. Please try again.");
+    } finally {
       setIsLoading(false);
-      
-      // Store user info in localStorage (for demo purposes)
-      const userRole = email.includes('producer') ? 'PRODUCER' : 
-                       email.includes('admin') ? 'ADMIN' : 'BUYER';
-      
-      localStorage.setItem('isAuthenticated', 'true');
-      localStorage.setItem('userRole', userRole);
-      localStorage.setItem('userEmail', email);
-      
-      // Redirect to home page (which will show the appropriate dashboard)
-      router.push('/');
-    }, 1500);
+    }
   };
 
   return (
