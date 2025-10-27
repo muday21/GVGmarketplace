@@ -1,4 +1,6 @@
+/* eslint-env node */
 import { drizzle } from "drizzle-orm/postgres-js";
+import { sql } from "drizzle-orm";
 import postgres from "postgres";
 import * as schema from "../src/lib/db/schema";
 
@@ -11,11 +13,13 @@ async function initDatabase() {
   }
 
   const client = postgres(connectionString);
-  const _db = drizzle(client, { schema });
+  const db = drizzle(client, { schema });
 
   try {
     console.log("Database connection successful!");
     console.log("You can now run: npm run db:push");
+    // Test the database connection
+    await db.execute(sql`SELECT 1`);
   } catch (error) {
     console.error("Database connection failed:", error);
     process.exit(1);

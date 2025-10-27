@@ -61,7 +61,7 @@ export default [
   },
   // Node.js config files and server-side files
   {
-    files: ['*.config.js', '*.config.mjs', 'next.config.js', 'tailwind.config.js', 'postcss.config.js', 'src/lib/**/*.ts'],
+    files: ['*.config.js', '*.config.mjs', '*.config.ts', 'next.config.js', 'tailwind.config.js', 'postcss.config.js', 'src/lib/**/*.ts', 'scripts/**/*.ts'],
     languageOptions: {
       globals: {
         module: 'readonly',

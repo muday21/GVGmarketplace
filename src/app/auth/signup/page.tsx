@@ -46,7 +46,7 @@ export default function SignUp() {
       } else {
         alert("Signup failed. Please try again.");
       }
-    } catch (_error) {
+      } catch {
       alert("Signup failed. Please try again.");
     } finally {
       setIsLoading(false);

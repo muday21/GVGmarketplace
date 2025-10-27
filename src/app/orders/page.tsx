@@ -34,7 +34,7 @@ export default function OrderList() {
     },
   ];
 
-  const statusConfig: Record<string, { icon: any; color: string; label: string }> = {
+  const statusConfig: Record<string, { icon: React.ComponentType<{ className?: string }>; color: string; label: string }> = {
     DELIVERED: { icon: CheckCircle, color: 'success', label: 'Delivered' },
     SHIPPED: { icon: Truck, color: 'info', label: 'Shipped' },
     PROCESSING: { icon: Clock, color: 'warning', label: 'Processing' },
@@ -61,7 +61,7 @@ export default function OrderList() {
                       <div className="flex-1">
                         <div className="flex items-center space-x-3 mb-2">
                           <h3 className="text-lg font-semibold text-slate-900">{order.orderNumber}</h3>
-                          <Badge variant={statusConfig[order.status].color as any}>
+                          <Badge variant={statusConfig[order.status].color as "success" | "info" | "warning"}>
                             <StatusIcon className="w-3 h-3 mr-1" />
                             {statusConfig[order.status].label}
                           </Badge>

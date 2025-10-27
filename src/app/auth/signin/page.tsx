@@ -28,7 +28,7 @@ export default function SignIn() {
       } else {
         alert(result.error);
       }
-    } catch (_error) {
+      } catch {
       alert("Login failed. Please try again.");
     } finally {
       setIsLoading(false);

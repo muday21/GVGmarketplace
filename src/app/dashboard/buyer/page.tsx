@@ -77,7 +77,7 @@ export default function BuyerDashboard() {
   ];
 
 
-  const statusConfig: Record<string, { color: string; icon: any }> = {
+  const statusConfig: Record<string, { color: string; icon: React.ComponentType<{ className?: string }> }> = {
     'Delivered': { color: 'success', icon: CheckCircle },
     'Shipped': { color: 'info', icon: Truck },
     'Processing': { color: 'warning', icon: Clock },
@@ -156,7 +156,7 @@ export default function BuyerDashboard() {
                             <p className="font-semibold text-slate-900 truncate">{order.product}</p>
                             <p className="text-sm text-slate-600">Order #{order.id}</p>
                             <div className="flex items-center space-x-2 mt-1">
-                              <Badge variant={statusConfig[order.status].color as any}>
+                              <Badge variant={statusConfig[order.status].color as "success" | "info" | "warning"}>
                                 <StatusIcon className="w-3 h-3 mr-1" />
                                 {order.status}
                               </Badge>

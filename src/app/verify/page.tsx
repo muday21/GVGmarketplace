@@ -11,7 +11,21 @@ import { mockBatches, mockSupplyEvents } from '../../data/mockData';
 
 export default function VerifyProduct() {
   const [batchCode, setBatchCode] = useState('');
-  const [verificationResult, setVerificationResult] = useState<any>(null);
+  const [verificationResult, setVerificationResult] = useState<{
+    isValid: boolean;
+    product: string;
+    batch: string;
+    producer: string;
+    harvestDate: string;
+    location: string;
+    certifications: string[];
+    supplyEvents: Array<{
+      event: string;
+      timestamp: string;
+      location: string;
+      verified: boolean;
+    }>;
+  } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleVerify = () => {
@@ -20,15 +34,38 @@ export default function VerifyProduct() {
       const batch = mockBatches.find(b => b.code === batchCode);
       if (batch) {
         const events = mockSupplyEvents.filter(e => e.batchId === batch.id);
-        setVerificationResult({ batch, events });
+        setVerificationResult({
+          isValid: true,
+          product: batch.product,
+          batch: batch.code,
+          producer: batch.producer,
+          harvestDate: batch.harvestDate,
+          location: batch.location,
+          certifications: batch.certifications,
+          supplyEvents: events.map(e => ({
+            event: e.event,
+            timestamp: e.timestamp,
+            location: e.location,
+            verified: e.verified
+          }))
+        });
       } else {
-        setVerificationResult({ error: true });
+        setVerificationResult({
+          isValid: false,
+          product: '',
+          batch: '',
+          producer: '',
+          harvestDate: '',
+          location: '',
+          certifications: [],
+          supplyEvents: []
+        });
       }
       setIsLoading(false);
     }, 1000);
   };
 
-  const eventIcons: Record<string, any> = {
+  const eventIcons: Record<string, string> = {
     HARVEST: '🌱',
     PROCESS: '⚙️',
     PACKAGE: '📦',
@@ -77,7 +114,7 @@ export default function VerifyProduct() {
 
           {verificationResult && (
             <>
-              {verificationResult.error ? (
+              {!verificationResult.isValid ? (
                 <Card className="border-red-200 bg-red-50">
                   <CardContent className="p-6 text-center">
                     <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
@@ -117,12 +154,12 @@ export default function VerifyProduct() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-4">
-                        {verificationResult.events.map((event: any, idx: number) => (
+                        {verificationResult.supplyEvents.map((event, idx: number) => (
                           <div key={idx} className="flex items-start space-x-4 pb-4 border-b last:border-0">
-                            <div className="text-2xl">{eventIcons[event.type]}</div>
+                            <div className="text-2xl">{eventIcons[event.event]}</div>
                             <div className="flex-1">
-                              <h4 className="font-semibold text-slate-900">{event.type}</h4>
-                              <p className="text-sm text-slate-600">{event.description}</p>
+                              <h4 className="font-semibold text-slate-900">{event.event}</h4>
+                              <p className="text-sm text-slate-600">{event.location}</p>
                               <div className="flex items-center space-x-4 mt-2 text-xs text-slate-500">
                                 <span className="flex items-center">
                                   <MapPin className="w-3 h-3 mr-1" />
