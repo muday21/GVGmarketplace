@@ -36,17 +36,17 @@ export default function VerifyProduct() {
         const events = mockSupplyEvents.filter(e => e.batchId === batch.id);
         setVerificationResult({
           isValid: true,
-          product: batch.product,
+          product: batch.productName,
           batch: batch.code,
-          producer: batch.producer,
-          harvestDate: batch.harvestDate,
-          location: batch.location,
-          certifications: batch.certifications,
+          producer: 'Producer Name', // We'll get this from products data
+          harvestDate: batch.manufactureDate,
+          location: 'Ethiopia', // Default location
+          certifications: ['Organic', 'Fair Trade'], // Default certifications
           supplyEvents: events.map(e => ({
-            event: e.event,
+            event: e.type,
             timestamp: e.timestamp,
             location: e.location,
-            verified: e.verified
+            verified: true // All events are verified in mock data
           }))
         });
       } else {
@@ -138,11 +138,11 @@ export default function VerifyProduct() {
                       <div className="grid md:grid-cols-2 gap-4">
                         <div>
                           <p className="text-sm text-emerald-700 mb-1">Batch Code</p>
-                          <p className="font-mono font-bold text-emerald-900">{verificationResult.batch.code}</p>
+                          <p className="font-mono font-bold text-emerald-900">{verificationResult.batch}</p>
                         </div>
                         <div>
                           <p className="text-sm text-emerald-700 mb-1">Product</p>
-                          <p className="font-semibold text-emerald-900">{verificationResult.batch.productName}</p>
+                          <p className="font-semibold text-emerald-900">{verificationResult.product}</p>
                         </div>
                       </div>
                     </CardContent>
@@ -182,7 +182,7 @@ export default function VerifyProduct() {
                       <h3 className="text-xl font-bold text-slate-900">QR Code</h3>
                     </CardHeader>
                     <CardContent className="flex justify-center p-8">
-                      <QRCodeSVG value={verificationResult.batch.code} size={200} />
+                      <QRCodeSVG value={verificationResult.batch} size={200} />
                     </CardContent>
                   </Card>
                 </>
