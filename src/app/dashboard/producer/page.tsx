@@ -14,8 +14,64 @@ import { Input } from '../../../components/ui/Input';
 import { Layout } from '../../../components/layout/Layout';
 import { ChatWidget } from '../../../components/chat/ChatWidget';
 import { mockProducts, mockBatches, mockOrders, mockSupplyEvents } from '../../../data/mockData';
+import { ProductFormDialog } from '../../../components/producer/ProductFormDialog';
+import { ProductViewDialog } from '../../../components/producer/ProductViewDialog';
+import { BatchFormDialog } from '../../../components/producer/BatchFormDialog';
+import { BatchViewDialog } from '../../../components/producer/BatchViewDialog';
+import { EventFormDialog } from '../../../components/producer/EventFormDialog';
 
 type TabType = 'overview' | 'products' | 'batches' | 'orders' | 'supply-chain' | 'analytics' | 'tokens' | 'messages' | 'settings';
+
+interface Product {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  category: string;
+  images: string[];
+  price: number;
+  currency: string;
+  unit: string;
+  producerId: string;
+  producerName: string;
+  producerRegion: string;
+  certifications: string[];
+  stock: number;
+  verified: boolean;
+}
+
+interface Batch {
+  id: string;
+  code: string;
+  productId: string;
+  productName: string;
+  quantity: number;
+  unit: string;
+  manufactureDate: string;
+  expiryDate: string;
+  status: string;
+  qrCode: string;
+  onChainRef: string;
+}
+
+interface FormData {
+  name?: string;
+  description?: string;
+  category?: string;
+  price?: number;
+  stock?: number;
+  unit?: string;
+  origin?: string;
+  certification?: string;
+  imageUrl?: string;
+  batchNumber?: string;
+  quantity?: number;
+  harvestDate?: string;
+  location?: string;
+  quality?: 'premium' | 'standard' | 'basic';
+  type?: string;
+  notes?: string;
+}
 
 export default function ProducerDashboard() {
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -26,6 +82,54 @@ export default function ProducerDashboard() {
     { id: 2, message: 'Batch YRG-2024-001 approved for blockchain verification', time: '1 day ago', unread: true },
     { id: 3, message: 'KYC documents approved', time: '3 days ago', unread: false },
   ]);
+
+  // Form dialog states
+  const [isProductFormOpen, setIsProductFormOpen] = useState(false);
+  const [isBatchFormOpen, setIsBatchFormOpen] = useState(false);
+  const [isEventFormOpen, setIsEventFormOpen] = useState(false);
+  const [isProductViewOpen, setIsProductViewOpen] = useState(false);
+  const [isBatchViewOpen, setIsBatchViewOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedBatch, setSelectedBatch] = useState<Batch | null>(null);
+
+  // Handler functions
+  const handleAddProduct = () => {
+    setSelectedProduct(null);
+    setIsProductFormOpen(true);
+  };
+
+  const handleEditProduct = (product: Product) => {
+    setSelectedProduct(product);
+    setIsProductFormOpen(true);
+  };
+
+  const handleViewProduct = (product: Product) => {
+    setSelectedProduct(product);
+    setIsProductViewOpen(true);
+  };
+
+  const handleAddBatch = () => {
+    setSelectedBatch(null);
+    setIsBatchFormOpen(true);
+  };
+
+  const handleViewBatch = (batch: Batch) => {
+    setSelectedBatch(batch);
+    setIsBatchViewOpen(true);
+  };
+
+  const handleAddEvent = () => {
+    setIsEventFormOpen(true);
+  };
+
+  const handleFormSubmit = (formData: FormData, type: 'product' | 'batch' | 'event') => {
+    // Mock implementation - in real app, this would make API calls
+    console.log(`Submitting ${type}:`, formData);
+    // Close the form
+    setIsProductFormOpen(false);
+    setIsBatchFormOpen(false);
+    setIsEventFormOpen(false);
+  };
 
   // Mock data for producer-specific content
   const producerProducts = mockProducts.filter(p => p.producerId === 'producer-1');
@@ -156,7 +260,7 @@ export default function ProducerDashboard() {
           <h2 className="text-2xl font-bold text-slate-900">Product Management</h2>
           <p className="text-slate-600">Manage your products and inventory</p>
         </div>
-        <Button variant="primary">
+        <Button variant="primary" onClick={handleAddProduct}>
           <Plus className="w-4 h-4 mr-2" />
           Add Product
         </Button>
@@ -201,10 +305,10 @@ export default function ProducerDashboard() {
                       <Badge variant={product.verified ? 'success' : 'warning'}>
                         {product.verified ? 'Verified' : 'Pending'}
                       </Badge>
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" onClick={() => handleEditProduct(product)}>
                         <Edit className="w-4 h-4" />
                       </Button>
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" onClick={() => handleViewProduct(product)}>
                         <Eye className="w-4 h-4" />
                       </Button>
                     </div>
@@ -225,7 +329,7 @@ export default function ProducerDashboard() {
           <h2 className="text-2xl font-bold text-slate-900">Batch Management</h2>
           <p className="text-slate-600">Track your production batches and blockchain verification</p>
         </div>
-        <Button variant="primary">
+        <Button variant="primary" onClick={handleAddBatch}>
           <Plus className="w-4 h-4 mr-2" />
           Create Batch
         </Button>
@@ -254,7 +358,7 @@ export default function ProducerDashboard() {
                   <Badge variant={batch.status === 'ACTIVE' ? 'success' : 'warning'}>
                     {batch.status}
                   </Badge>
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" onClick={() => handleViewBatch(batch)}>
                     <Eye className="w-4 h-4" />
                   </Button>
                 </div>
@@ -312,7 +416,7 @@ export default function ProducerDashboard() {
           <h2 className="text-2xl font-bold text-slate-900">Supply Chain Tracking</h2>
           <p className="text-slate-600">Record and track supply chain events on blockchain</p>
         </div>
-        <Button variant="primary">
+        <Button variant="primary" onClick={handleAddEvent}>
           <Plus className="w-4 h-4 mr-2" />
           Record Event
         </Button>
@@ -514,15 +618,15 @@ export default function ProducerDashboard() {
           <CardContent className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Company Name</label>
-              <Input value="Sidama Coffee Cooperative" />
+              <Input value="Sidama Coffee Cooperative" readOnly />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Contact Person</label>
-              <Input value="John Doe" />
+              <Input value="John Doe" readOnly />
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-              <Input value="producer@example.com" />
+              <Input value="producer@example.com" readOnly />
             </div>
             <Button variant="primary">Save Changes</Button>
           </CardContent>
@@ -620,6 +724,49 @@ export default function ProducerDashboard() {
           </div>
         </div>
       </Layout>
+      
+      {/* Form Dialogs */}
+      {isProductFormOpen && (
+        <ProductFormDialog
+          isOpen={isProductFormOpen}
+          onClose={() => setIsProductFormOpen(false)}
+          onSubmit={(data) => handleFormSubmit(data, 'product')}
+          product={selectedProduct}
+        />
+      )}
+
+      {isBatchFormOpen && (
+        <BatchFormDialog
+          isOpen={isBatchFormOpen}
+          onClose={() => setIsBatchFormOpen(false)}
+          onSubmit={(data) => handleFormSubmit(data, 'batch')}
+          batch={selectedBatch}
+        />
+      )}
+
+      {isEventFormOpen && (
+        <EventFormDialog
+          isOpen={isEventFormOpen}
+          onClose={() => setIsEventFormOpen(false)}
+          onSubmit={(data) => handleFormSubmit(data, 'event')}
+        />
+      )}
+
+      {isProductViewOpen && selectedProduct && (
+        <ProductViewDialog
+          isOpen={isProductViewOpen}
+          onClose={() => setIsProductViewOpen(false)}
+          product={selectedProduct}
+        />
+      )}
+
+      {isBatchViewOpen && selectedBatch && (
+        <BatchViewDialog
+          isOpen={isBatchViewOpen}
+          onClose={() => setIsBatchViewOpen(false)}
+          batch={selectedBatch}
+        />
+      )}
       
       <ChatWidget 
         showFloatingButton={false}

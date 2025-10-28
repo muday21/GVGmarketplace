@@ -13,8 +13,8 @@ export const Button = memo(forwardRef<HTMLButtonElement, ButtonProps>(
     const variants = {
       primary: 'bg-emerald-600 text-white hover:bg-emerald-700 focus:ring-emerald-500',
       secondary: 'bg-slate-600 text-white hover:bg-slate-700 focus:ring-slate-500',
-      outline: 'border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 focus:ring-emerald-500',
-      ghost: 'text-slate-700 hover:bg-slate-100 focus:ring-slate-500',
+      outline: '!bg-white border-2 border-emerald-600 text-emerald-600 hover:bg-emerald-50 focus:ring-emerald-500',
+      ghost: '!bg-white text-slate-700 hover:bg-slate-100 focus:ring-slate-500',
       danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
     };
 
