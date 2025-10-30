@@ -82,6 +82,12 @@ export default [
       'out/**',
       'build/**',
       'next-env.d.ts',
+      'scripts/**',
+      'test-*.js',
+      'setup-database.js',
+      'delete-users.js',
+      'server.js',
+      'query',
     ],
   },
 ];
