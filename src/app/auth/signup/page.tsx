@@ -9,7 +9,7 @@ import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
 import { Select } from '../../../components/ui/Select';
 import { Card, CardHeader, CardContent } from '../../../components/ui/Card';
-import { demoAuth } from '../../../lib/demo-auth';
+import { signUp } from '../../../lib/auth';
 
 export default function SignUp() {
   const { t } = useTranslation();
@@ -34,19 +34,34 @@ export default function SignUp() {
     setIsLoading(true);
     
     try {
-      const result = await demoAuth.signUp(
-        formData.email, 
-        formData.password, 
-        formData.name, 
-        formData.role
-      );
+      const { data, error } = await signUp.email({
+        email: formData.email,
+        password: formData.password,
+        name: formData.name,
+      });
       
-      if (result.success) {
-        router.push("/dashboard");
-      } else {
+      if (error) {
         alert("Signup failed. Please try again.");
+        return;
       }
-      } catch {
+      
+      if (data) {
+        // Persist the selected role since Better Auth defaults to BUYER
+        await fetch('/api/users/update-role', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: formData.email,
+            role: formData.role,
+          })
+        });
+
+        // Show success message and redirect to verification page
+        alert("Account created successfully! Please check your email to verify your account before signing in.");
+        router.push('/auth/verify-email?email=' + encodeURIComponent(formData.email));
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
       alert("Signup failed. Please try again.");
     } finally {
       setIsLoading(false);

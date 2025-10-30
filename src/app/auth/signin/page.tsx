@@ -8,7 +8,7 @@ import { Mail, Lock } from 'lucide-react';
 import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
 import { Card, CardHeader, CardContent } from '../../../components/ui/Card';
-import { demoAuth } from '../../../lib/demo-auth';
+import { signIn, getSession } from '../../../lib/auth';
 
 export default function SignIn() {
   const { t } = useTranslation();
@@ -22,13 +22,69 @@ export default function SignIn() {
     setIsLoading(true);
     
     try {
-      const result = await demoAuth.signIn(email, password);
-      if (result.success) {
-        router.push("/dashboard");
-      } else {
-        alert(result.error);
+      const { data, error } = await signIn.email({
+        email,
+        password,
+      }, {
+        onError: (ctx) => {
+          // Handle the error according to Better Auth documentation
+          if (ctx.error.status === 403) {
+            alert("Please verify your email address before signing in. Check your inbox for a verification email.");
+          } else {
+            alert(ctx.error.message || "Login failed. Please check your credentials.");
+          }
+        }
+      });
+      
+      if (error) {
+        // Error handling is now done in onError callback
+        return;
       }
-      } catch {
+      
+      if (data) {
+        // Get user session to access role
+        const session = await getSession();
+        let userRole = (session?.data?.user as any)?.role || 'BUYER';
+
+        // Fetch the latest role from the server to avoid stale session data
+        try {
+          const roleResponse = await fetch(`/api/users/get-role?email=${encodeURIComponent(email)}`, {
+            cache: 'no-store',
+          });
+
+          if (roleResponse.ok) {
+            const { role } = await roleResponse.json();
+            if (role) {
+              userRole = role;
+            }
+          }
+        } catch (fetchError) {
+          console.warn('Failed to fetch latest user role, falling back to session role.', fetchError);
+        }
+
+        // Persist role locally for legacy components
+        try {
+          localStorage.setItem('isAuthenticated', 'true');
+          localStorage.setItem('userRole', userRole);
+          localStorage.setItem('userEmail', email);
+        } catch (storageError) {
+          console.warn('Failed to store auth details in localStorage.', storageError);
+        }
+
+        // Redirect based on role
+        switch (userRole) {
+          case 'PRODUCER':
+            router.push('/dashboard/producer');
+            break;
+          case 'ADMIN':
+            router.push('/dashboard/admin');
+            break;
+          default:
+            router.push('/dashboard/buyer');
+        }
+      }
+    } catch (error) {
+      console.error("Login error:", error);
       alert("Login failed. Please try again.");
     } finally {
       setIsLoading(false);
@@ -38,17 +94,11 @@ export default function SignIn() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-slate-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-4">
-        {/* Demo Info Card */}
-        <Card className="bg-blue-50 border-blue-200">
+        {/* Login Info Card */}
+        <Card className="bg-emerald-50 border-emerald-200">
           <CardContent className="p-4">
-            <h3 className="font-semibold text-blue-900 mb-2">🎯 Demo Login Info</h3>
-            <p className="text-sm text-blue-800 mb-2">Use any email with these keywords to test different roles:</p>
-            <ul className="text-sm text-blue-700 space-y-1">
-              <li>• <strong>producer@example.com</strong> → Producer Dashboard</li>
-              <li>• <strong>admin@example.com</strong> → Admin Dashboard</li>
-              <li>• <strong>buyer@example.com</strong> → Buyer Dashboard</li>
-            </ul>
-            <p className="text-xs text-blue-600 mt-2">Password: Any password works (demo mode)</p>
+            <h3 className="font-semibold text-emerald-900 mb-2">🔐 Login</h3>
+            <p className="text-sm text-emerald-800">Use the email and password you registered with to sign in.</p>
           </CardContent>
         </Card>
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import {
   ShoppingCart, Clock, CheckCircle, Heart,
@@ -13,15 +13,26 @@ import { Button } from '../../../components/ui/Button';
 import { Badge } from '../../../components/ui/Badge';
 import { Layout } from '../../../components/layout/Layout';
 import { ChatWidget } from '../../../components/chat/ChatWidget';
+import { useSession } from '../../../lib/auth';
+import { SessionDebug } from '../../../components/debug/SessionDebug';
 
 export default function BuyerDashboard() {
-  const [userName, setUserName] = useState('Guest');
+  const { data: session, isPending } = useSession();
   const [isChatOpen, setIsChatOpen] = useState(false);
 
-  useEffect(() => {
-    const name = localStorage.getItem('userName') || 'Guest';
-    setUserName(name);
-  }, []);
+  // Get user name from session
+  const userName = session?.user?.name || 'Guest';
+
+  // Show loading state while session is being fetched
+  if (isPending) {
+    return (
+      <Layout>
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-lg">Loading...</div>
+        </div>
+      </Layout>
+    );
+  }
 
 
 
@@ -86,6 +97,7 @@ export default function BuyerDashboard() {
       return (
         <>
         <Layout>
+          <SessionDebug />
           {/* Full-width Welcome Section */}
           <div className="relative bg-gradient-to-br from-emerald-600 via-emerald-700 to-emerald-900 text-white py-16 overflow-hidden">
             <div className="absolute inset-0 opacity-10">

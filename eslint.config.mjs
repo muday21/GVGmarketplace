@@ -32,6 +32,7 @@ export default [
         PerformanceObserver: 'readonly',
         PerformanceEntry: 'readonly',
         PerformanceEventTiming: 'readonly',
+        fetch: 'readonly',
         // Web API globals
         Request: 'readonly',
         Response: 'readonly',
@@ -61,7 +62,7 @@ export default [
   },
   // Node.js config files and server-side files
   {
-    files: ['*.config.js', '*.config.mjs', '*.config.ts', 'next.config.js', 'tailwind.config.js', 'postcss.config.js', 'src/lib/**/*.ts', 'scripts/**/*.ts'],
+    files: ['*.config.js', '*.config.mjs', '*.config.ts', 'next.config.js', 'tailwind.config.js', 'postcss.config.js', 'src/lib/**/*.ts', 'scripts/**/*.ts', 'src/app/api/**/*.ts'],
     languageOptions: {
       globals: {
         module: 'readonly',

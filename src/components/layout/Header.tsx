@@ -8,41 +8,46 @@ import { Menu, X, ShoppingCart, User, Package, LogOut, CreditCard, MapPin, Bell 
 import { Button } from '../ui/Button';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import { useCart } from '../../contexts/CartContext';
+import { useSession, signOut } from '../../lib/auth';
 
 export const Header = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { getTotalItems } = useCart();
+  const { data: session, isPending } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userRole, setUserRole] = useState('');
-  const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
 
-  useEffect(() => {
-    // Check authentication status
-    const authStatus = localStorage.getItem('isAuthenticated') === 'true';
-    const role = localStorage.getItem('userRole') || '';
-    const name = localStorage.getItem('userName') || '';
-    const email = localStorage.getItem('userEmail') || '';
-    setIsAuthenticated(authStatus);
-    setUserRole(role);
-    setUserName(name);
-    setUserEmail(email);
-  }, []);
+  // Get user data from Better Auth session
+  const isAuthenticated = !!session;
+  const userRole = (session?.user as any)?.role || '';
+  const userName = session?.user?.name || '';
+  const userEmail = session?.user?.email || '';
 
-  const handleLogout = () => {
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userName');
-    setIsAuthenticated(false);
-    setUserRole('');
-    setUserName('');
-    setUserEmail('');
-    setShowProfileDropdown(false);
-    router.push('/');
+  // Debug logging
+  console.log('Header Session Debug:', { session, isPending, isAuthenticated, userName, userEmail });
+
+  // Get dynamic home link based on authentication status and role
+  const getHomeLink = () => {
+    if (!isAuthenticated) return '/';
+    switch (userRole) {
+      case 'PRODUCER':
+        return '/dashboard/producer';
+      case 'ADMIN':
+        return '/dashboard/admin';
+      default:
+        return '/dashboard/buyer';
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      setShowProfileDropdown(false);
+      router.push('/');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   const toggleProfileDropdown = () => {
@@ -66,6 +71,23 @@ export const Header = () => {
     };
   }, [showProfileDropdown]);
 
+  // Show loading state while session is being fetched
+  if (isPending) {
+    return (
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <Link href="/" className="flex items-center space-x-2">
+              <Package className="w-8 h-8 text-emerald-600" />
+              <span className="text-xl font-bold text-slate-900">{t('app.name')}</span>
+            </Link>
+            <div className="text-sm text-slate-500">Loading...</div>
+          </div>
+        </nav>
+      </header>
+    );
+  }
+
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-40">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -76,7 +98,7 @@ export const Header = () => {
           </Link>
 
           <div className="hidden md:flex items-center space-x-6">
-            <Link href="/" className="text-slate-700 hover:text-emerald-600 transition-colors font-medium">
+            <Link href={getHomeLink()} className="text-slate-700 hover:text-emerald-600 transition-colors font-medium">
               {t('nav.home')}
             </Link>
             <Link href="/products" className="text-slate-700 hover:text-emerald-600 transition-colors font-medium">
@@ -199,7 +221,7 @@ export const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 space-y-4">
             <Link
-              href="/"
+              href={getHomeLink()}
               className="block text-slate-700 hover:text-emerald-600 transition-colors font-medium"
               onClick={() => setIsMenuOpen(false)}
             >
