@@ -41,14 +41,15 @@ jobs:
       run: |
         mkdir -p deploy
         cp -r .next deploy/
-        cp -r public deploy/
+        cp -r public deploy/ 2>/dev/null || mkdir -p deploy/public
         cp -r node_modules deploy/
         cp package.json deploy/
         cp package-lock.json deploy/
-        cp next.config.mjs deploy/
+        cp next.config.mjs deploy/ 2>/dev/null || cp next.config.js deploy/ 2>/dev/null || true
         cp server.js deploy/
         cp .env deploy/
         cp -r prisma deploy/ 2>/dev/null || true
+        cp -r src deploy/ 2>/dev/null || true
         
     - name: Deploy to cPanel via FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
